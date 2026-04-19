@@ -2,7 +2,7 @@
 <a href="https://www.home-assistant.io/" target="_blank"><img src="https://user-images.githubusercontent.com/102819027/233830183-9c55677d-b6a1-4153-8d3c-219394ec8720.png" alt="immagine" style="width:10%;"></a> 
 
 <pre style="font-size:10px; background-color: #d9ffcc;">
-E-mail: <a href="mailto:danilo.robotti@gmail.com">danilo.robotti@gmail.com</a>
+E-mail: <a href="mailto:danilo.robotti@gmail.com">dani[](url)lo.robotti@gmail.com</a>
 </pre>
 
 <strong>Esonero di Responsabilità:</strong><br>
@@ -11,7 +11,6 @@ Il Cliente ha l’onere e la responsabilità della scelta, dell’installazione,
 <strong><a href="https://github.com/DanRobo76/VMC-HELTY-FLOW/blob/main/SECURITY.md" text="Limiti del SoftWare (Security Policy)">Limiti del SoftWare (Security Policy)</a></strong> 
 
 #
-<img width="40%" alt="Aspiratore Partenza" src="https://github.com/user-attachments/assets/51c9c9e4-03fd-4878-b85f-75c0d5deb69a" />
 <img width="40%" alt="Aspiratore" src="https://github.com/user-attachments/assets/0ea8134e-25e7-4141-9f81-8ef87ccb5fa8" />
 
 <strong>Pre-Requisiti:</strong><br> 
