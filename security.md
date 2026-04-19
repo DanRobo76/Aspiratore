@@ -1,6 +1,6 @@
 # Security Policy
 
-### - Versione del SoftWare: [Link Release](https://github.com/DanRobo76/VMC-HELTY-FLOW/releases)
+### - Versione del SoftWare
 
 |          Aspiratore Release              | Supportato da Home Assistant (Core)     |
 | ---------------------------------------- | ----------------------------------------|
