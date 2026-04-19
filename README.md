@@ -11,8 +11,8 @@ Il Cliente ha l’onere e la responsabilità della scelta, dell’installazione,
 <strong><a href="https://github.com/DanRobo76/VMC-HELTY-FLOW/blob/main/SECURITY.md" text="Limiti del SoftWare (Security Policy)">Limiti del SoftWare (Security Policy)</a></strong> 
 
 #
-
-<img src="https://github-production-user-asset-6210df.s3.amazonaws.com/102819027/282244833-479bc367-e39e-4443-9969-92620c3c96bf.png" alt="immagine" style="width:70%;">
+<img width="40%" alt="Aspiratore Partenza" src="https://github.com/user-attachments/assets/51c9c9e4-03fd-4878-b85f-75c0d5deb69a" />
+<img width="40%" alt="Aspiratore" src="https://github.com/user-attachments/assets/0ea8134e-25e7-4141-9f81-8ef87ccb5fa8" />
 
 <strong>Pre-Requisiti:</strong><br> 
 <sub>- Installare <strong><a href="https://www.home-assistant.io/installation/">Home Assistant</a></strong>;</sub><br>
