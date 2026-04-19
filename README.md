@@ -25,7 +25,7 @@ Il Cliente ha l’onere e la responsabilità della scelta, dell’installazione,
 <sub>• ....
 
 ## <span style="color:#663300">SchreenShot</span> - Possono variare in funzione dell'Ultima Versione Rilasciata
-![Grafiche per GitHub](https://github.com/DanRobo76/VMC-HELTY-FLOW/assets/102819027/bee1e748-2f46-4b8b-b977-3e7ce7607683)<br><br> 
+
 
 #
 
