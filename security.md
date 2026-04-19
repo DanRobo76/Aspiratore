@@ -8,6 +8,6 @@
 #
 
 ### - Rapporto Errori
-[Link Release](https://github.com/DanRobo76/VMC-HELTY-FLOW/releases)
+[Link Release](https://github.com/DanRobo76/Aspiratore/releases)
 <br>
 #
