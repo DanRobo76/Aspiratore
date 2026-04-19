@@ -8,7 +8,7 @@ E-mail: <a href="mailto:danilo.robotti@gmail.com">danilo.robotti@gmail.com</a>
 <strong>Esonero di Responsabilità:</strong><br>
 In nessun caso l'Ing. Danilo Robotti sarà responsabile di danneggiamenti diretti, indiretti, o conseguenti, correlati a difetti del presente SoftWare. 
 Il Cliente ha l’onere e la responsabilità della scelta, dell’installazione, dell’uso e della gestione del SoftWare al fine del raggiungimento del risultato prefissatosi. 
-<strong><a href="https://github.com/DanRobo76/VMC-HELTY-FLOW/blob/main/SECURITY.md" text="Limiti del SoftWare (Security Policy)">Limiti del SoftWare (Security Policy)</a></strong> 
+<strong><a href="[https://github.com/DanRobo76/VMC-HELTY-FLOW/blob/main/SECURITY.md](https://github.com/DanRobo76/Aspiratore/blob/main/security.md)" text="Limiti del SoftWare (Security Policy)">Limiti del SoftWare (Security Policy)</a></strong> 
 
 #
 <img width="40%" alt="Aspiratore" src="https://github.com/user-attachments/assets/0ea8134e-25e7-4141-9f81-8ef87ccb5fa8" />
