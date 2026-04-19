@@ -2,7 +2,7 @@
 <a href="https://www.home-assistant.io/" target="_blank"><img src="https://user-images.githubusercontent.com/102819027/233830183-9c55677d-b6a1-4153-8d3c-219394ec8720.png" alt="immagine" style="width:10%;"></a> 
 
 <pre style="font-size:10px; background-color: #d9ffcc;">
-E-mail: <a href="mailto:danilo.robotti@gmail.com">dani[](url)lo.robotti@gmail.com</a>
+E-mail: <a href="mailto:danilo.robotti@gmail.com">danilo.robotti@gmail.com</a>
 </pre>
 
 <strong>Esonero di Responsabilità:</strong><br>
