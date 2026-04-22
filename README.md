@@ -1,10 +1,6 @@
-# ASPIRATORE MASTER per Home Assistant
-
-<p align="center">
-  <a href="https://www.home-assistant.io/" target="_blank">
-    <img src="https://user-images.githubusercontent.com/102819027/233830183-9c55677d-b6a1-4153-8d3c-219394ec8720.png" alt="Home Assistant" width="90">
+# ASPIRATORE MASTER <a href="https://www.home-assistant.io/" target="_blank"><img src="https://user-images.githubusercontent.com/102819027/233830183-9c55677d-b6a1-4153-8d3c-219394ec8720.png" alt="Home Assistant" width="90">
   </a>
-</p>
+
 
 <p align="center">
   <strong>Controllo intelligente di aspiratori e ventilatori per Home Assistant</strong><br>
