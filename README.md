@@ -10,7 +10,7 @@
   <a href="mailto:danilo.robotti@gmail.com">danilo.robotti@gmail.com</a>
 </p>
 
-<img width="1672" height="941" alt="ASPIRATORE MASTER" src="https://github.com/DanRobo76/Aspiratore/blob/main/immagini/Collage.png" />
+<img width="1672" height="941" alt="ASPIRATORE MASTER" src="https://github.com/DanRobo76/Aspiratore/blob/main/immagini/Collage%20Aspiratore.png" />
 
 ## Cos'è
 **ASPIRATORE MASTER** è un package avanzato per Home Assistant progettato per la gestione intelligente di aspiratori e ventilatori (`Switch` / `Fan`). È ideale per bagni ciechi, lavanderie, locali tecnici e ambienti dove il ricambio d’aria deve essere automatico, coerente con le condizioni reali e affidabile nel tempo.
