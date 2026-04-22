@@ -10,7 +10,7 @@ In nessun caso l'Ing. Danilo Robotti sarà responsabile di danneggiamenti dirett
 Il Cliente ha l’onere e la responsabilità della scelta, dell’installazione, dell’uso e della gestione del SoftWare al fine del raggiungimento del risultato prefissatosi. 
 <strong><a href="https://github.com/DanRobo76/Aspiratore/blob/main/security.md" text="Limiti del SoftWare (Security Policy)">Limiti del SoftWare (Security Policy)</a></strong> 
 #
-<img width="1672" height="941" alt="Collage" src="https://github.com/user-attachments/assets/632ee473-c5b4-4b77-84bc-ac78f127a390" />
+<img width="1672" height="941" alt="Collage" src="https://github.com/DanRobo76/Aspiratore/blob/main/immagini/Collage.png" />
 
 <strong>Pre-Requisiti:</strong><br> 
 <sub>- Installare <strong><a href="https://www.home-assistant.io/installation/">Home Assistant</a></strong>;</sub><br>
