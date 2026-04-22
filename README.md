@@ -143,7 +143,8 @@ Fornire un sistema di ventilazione:
 ---
 
 ## <span style="color:#663300">SchreenShot</span> - Possono variare in funzione dell'Ultima Versione Rilasciata
-<img width="1188" height="896" alt="Collage" src="https://github.com/user-attachments/assets/9239a568-26b8-4582-bd70-9d76a5d8464f" />
+<img width="1402" height="1122" alt="Collage Aspiratore" src="https://github.com/user-attachments/assets/5d115cea-e093-4809-b750-77c720c081ce" />
+
 
 
 #
