@@ -1,5 +1,3 @@
-# Security Policy
-
 ### - Versione del SoftWare
 
 |          Aspiratore Release              | Supportato da Home Assistant (Core)     |
