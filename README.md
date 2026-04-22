@@ -1,150 +1,80 @@
-## ASPIRATORE sviluppato per Home Assistant
-<a href="https://www.home-assistant.io/" target="_blank"><img src="https://user-images.githubusercontent.com/102819027/233830183-9c55677d-b6a1-4153-8d3c-219394ec8720.png" alt="immagine" style="width:10%;"></a> 
+# ASPIRATORE MASTER per Home Assistant
 
-<pre style="font-size:10px; background-color: #d9ffcc;">
-E-mail: <a href="mailto:danilo.robotti@gmail.com">danilo.robotti@gmail.com</a>
-</pre>
+<p align="center">
+  <a href="https://www.home-assistant.io/" target="_blank">
+    <img src="https://user-images.githubusercontent.com/102819027/233830183-9c55677d-b6a1-4153-8d3c-219394ec8720.png" alt="Home Assistant" width="90">
+  </a>
+</p>
 
-<strong>Esonero di Responsabilità:</strong><br>
-In nessun caso l'Ing. Danilo Robotti sarà responsabile di danneggiamenti diretti, indiretti, o conseguenti, correlati a difetti del presente SoftWare. 
-Il Cliente ha l’onere e la responsabilità della scelta, dell’installazione, dell’uso e della gestione del SoftWare al fine del raggiungimento del risultato prefissatosi. 
-<strong><a href="https://github.com/DanRobo76/Aspiratore/blob/main/security.md" text="Limiti del SoftWare (Security Policy)">Limiti del SoftWare (Security Policy)</a></strong> 
-#
-<img width="1672" height="941" alt="Collage" src="https://github.com/DanRobo76/Aspiratore/blob/main/immagini/Collage.png" />
+<p align="center">
+  <strong>Controllo intelligente di aspiratori e ventilatori per Home Assistant</strong><br>
+  Una soluzione avanzata per automatizzare il ricambio d’aria in modo affidabile, stabile e configurabile.
+</p>
 
-<strong>Pre-Requisiti:</strong><br> 
-<sub>- Installare <strong><a href="https://www.home-assistant.io/installation/">Home Assistant</a></strong>;</sub><br>
-<sub>- Installare l'Add On [Facoltativo, ma Consigliato] <strong>File Editor</strong>, di Home Assistant; [Impostazioni -> Componenti aggiuntivi -> Raccolta di Componenti Aggiuntivi -> File editor].</sub><br>
+<p align="center">
+  <a href="mailto:danilo.robotti@gmail.com">danilo.robotti@gmail.com</a>
+</p>
 
-#
+<img width="1672" height="941" alt="ASPIRATORE MASTER" src="https://github.com/DanRobo76/Aspiratore/blob/main/immagini/Collage.png" />
 
-<strong>Punti di Forza:</strong><br>
-## Descrizione
-# 🛠️ ASPIRATORE MASTER
+## Cos'è ASPIRATORE MASTER
+**ASPIRATORE MASTER** è un package avanzato per Home Assistant progettato per la gestione intelligente di aspiratori e ventilatori (`Switch` / `Fan`). È pensato per ambienti come **bagni ciechi**, lavanderie, locali tecnici e spazi soggetti a umidità o scarsa aerazione, dove il ricambio d’aria deve essere automatico, affidabile e coerente con le condizioni reali dell’ambiente.
 
-**ASPIRATORE MASTER** è un package avanzato per Home Assistant progettato per la gestione intelligente di aspiratori e ventilatori (`Switch` / `Fan`).
+Non è una semplice automazione, ma un sistema strutturato che supervisiona il funzionamento della ventilazione, valida il dominio operativo e coordina attuatore, sensori e timer per garantire continuità, stabilità e sicurezza logica.
 
-È particolarmente indicato per ambienti come **bagni ciechi privi di finestra**, dove il ricambio d’aria deve essere completamente automatizzato, affidabile e coerente con le condizioni ambientali.
+## Punti di forza
+- **Selezione dinamica delle entità** tramite menu a tendina: attuatore, sensore di umidità e sensore di presenza.
+- **Controllo evoluto dell’umidità** con attivazione solo dopo permanenza sopra soglia, gestione offset e riduzione dei falsi positivi.
+- **Gestione completa dei timer**: permanenza umidità, controllo stato, durata massima aspirazione e timer ciclici.
+- **Integrazione con il rilevamento presenza** per migliorare comfort, efficacia e continuità della ventilazione.
+- **Sincronizzazione tra stato reale e stato logico** con riattivazione automatica in caso di spegnimenti manuali indesiderati.
+- **Architettura fail-safe e self-healing**, con gestione di stati non validi (`unknown`, `unavailable`, ecc.), reset automatici e prevenzione di comportamenti instabili.
 
----
+## Come funziona
+Il sistema opera come un vero **supervisore intelligente della ventilazione**: controlla continuamente la validità di sensori e attuatore, gestisce le priorità tra umidità e presenza, attiva l’aspirazione solo quando le condizioni sono coerenti e mantiene il funzionamento stabile anche in presenza di anomalie o incoerenze temporanee.
 
-## 🚀 Caratteristiche principali
+## Caso d’uso tipico
+Un classico esempio è il **bagno cieco** con aspiratore tradizionale, collegato tramite **relè smart** come Shelly, con sensore di umidità e sensore presenza. Il risultato è un sistema di ventilazione completamente automatico, più affidabile di una semplice logica on/off e capace di adattarsi all’uso reale dell’ambiente.
 
-- 🔄 **Selezione dinamica delle entità (plug & play)**  
-  Tramite **menu a tendina (dropdown)** è possibile selezionare:
-  - Attuatore (`Switch` / `Fan`)
-  - Sensore di umidità
-  - Sensore di rilevamento presenza  
+## Requisiti e configurazione
+**Pre-requisiti:**
+- **[Home Assistant](https://www.home-assistant.io/installation/)**
+- Add-on **File Editor** facoltativo ma consigliato
 
-  Le liste vengono aggiornate automaticamente e includono solo entità valide, con gestione intelligente dei casi *unknown*, *unavailable* o placeholder.
+Percorso:
+`Impostazioni -> Componenti aggiuntivi -> Raccolta di Componenti Aggiuntivi -> File Editor`
 
----
+**Requisiti minimi:**
+- 1 attuatore (`Switch` oppure `Fan`)
+- 1 sensore di umidità
+- 1 sensore di presenza *(opzionale ma consigliato)*
 
-- 💧 **Controllo avanzato dell’umidità**
-  - Attivazione solo dopo un **tempo di permanenza sopra soglia**
-  - Gestione soglia + offset configurabile
-  - Prevenzione di falsi positivi e attivazioni impulsive
-
----
-
-- ⏱️ **Gestione completa dei timer**
-  - Timer di **permanenza umidità**
-  - Timer di **controllo stato ( definisce quando riattivare l’attuatore dopo uno spegnimento manuale indesiderato.)**
-  - Timer di **durata massima aspirazione**
-  - Timer ciclico per garantire il mantenimento delle condizioni
-
----
-
-- 👤 **Integrazione rilevamento presenza**
-  - Attivazione ventilazione durante l’utilizzo dell’ambiente
-  - Prolungamento intelligente del funzionamento post-utilizzo
-  - Coordinamento completo con il dominio umidità
-
----
-
-- 🔄 **Sincronizzazione stato reale / virtuale**
-  - Allineamento continuo tra stato dell’attuatore e stato logico
-  - Gestione degli spegnimenti manuali indesiderati
-  - Riattivazione automatica se necessario
-
----
-
-- 🛡️ **Architettura robusta (fail-safe & self-healing)**
-  - Gestione completa di stati non validi (`unknown`, `unavailable`, ecc.)
-  - Reset automatico in caso di incoerenze
-  - Prevenzione loop e comportamenti instabili
-  - Ripristino automatico del dominio operativo
-
----
-
-## ⚙️ Funzionamento
-
-Il sistema opera come un **supervisore intelligente** che:
-
-- valida continuamente il dominio (sensori + attuatore)
-- attiva il ventilatore solo in condizioni coerenti
-- gestisce priorità tra **umidità** e **rilevamento**
-- garantisce continuità operativa anche in caso di anomalie
-
----
-
-## 🎯 Caso d’uso tipico
-
-- Bagno cieco con aspiratore tradizionale  
-- Collegamento tramite **relè smart (es. Shelly)**  
-- Sensore di umidità + sensore presenza  
-
-➡️ Risultato: sistema completamente automatico, senza intervento manuale.
-
----
-
-## 🧠 Filosofia del progetto
-
-ASPIRATORE MASTER non è una semplice automazione, ma un **framework logico modulare**, progettato secondo principi:
-
-- **affidabilità operativa**
-- **manutenibilità**
-- **scalabilità**
-- **controllo deterministico degli stati**
-
----
-
-## 📌 Requisiti
-
-- Home Assistant
-- Almeno:
-  - 1 attuatore (`Switch` o `Fan`)
-  - 1 sensore umidità
-  - 1 sensore presenza (opzionale ma consigliato)
-
----
-
-## 🔧 Configurazione
-
-La configurazione avviene **interamente da interfaccia**, tramite selettori:
-
+La configurazione avviene direttamente da interfaccia tramite:
 - `Selezione Attuatore`
 - `Selezione Sensore Umidità`
 - `Selezione Sensore Rilevamento`
 
-➡️ Nessuna modifica YAML necessaria per cambiare dispositivi.
+Questo permette di cambiare i dispositivi senza dover modificare manualmente lo YAML ogni volta.
 
----
+## Perché sceglierlo
+ASPIRATORE MASTER è ideale per chi desidera una soluzione di ventilazione **intelligente, autonoma, robusta e professionale**, progettata con criteri di affidabilità operativa, manutenibilità, scalabilità e controllo deterministico degli stati. In pratica, trasforma un comune aspiratore in un sistema di gestione avanzata della ventilazione.
 
-## 📈 Obiettivo
+## Security Policy
+Per maggiori dettagli sui limiti del software e sulle condizioni di utilizzo:
+**[Limiti del Software (Security Policy)](https://github.com/DanRobo76/Aspiratore/blob/main/security.md)**
 
-Fornire un sistema di ventilazione:
+## Esonero di responsabilità
+In nessun caso l’Ing. Danilo Robotti potrà essere ritenuto responsabile per danni diretti, indiretti o conseguenti derivanti dall’uso del presente software. L’utente finale mantiene piena responsabilità in merito alla scelta, installazione, configurazione, utilizzo e gestione del software in funzione del risultato che intende ottenere e del contesto applicativo in cui decide di impiegarlo.
 
-- **intelligente**
-- **autonomo**
-- **robusto**
-- **adattabile a qualsiasi ambiente**
+## Supporta il progetto
+Se il progetto ti è stato utile e desideri supportarne lo sviluppo, puoi offrirmi un GinSeng:
 
----
+#### [Clicca qui per supportare il progetto](https://www.paypal.com/donate/?business=YU9379GL8VDW4&amount=1.2&no_recurring=1&item_name=Se+il+progetto+ti+%C3%A8+piaciuto%2C++offrimi+un+GinSeng%21+%0A%3B%29&currency_code=EUR)
 
-#
+<a href="https://www.paypal.com/donate/?business=YU9379GL8VDW4&amount=1.2&no_recurring=1&item_name=Se+il+progetto+ti+%C3%A8+piaciuto%2C++offrimi+un+GinSeng%21+%0A%3B%29&currency_code=EUR">
+  <img src="https://user-images.githubusercontent.com/102819027/233830035-709efa6b-94d7-4ea6-865b-76ab5c1eee6d.png" alt="Donate" width="40">
+</a>
 
-#### Se il progetto ti è piaciuto <a href="https://www.paypal.com/donate/?business=YU9379GL8VDW4&amount=1.2&no_recurring=1&item_name=Se+il+progetto+ti+%C3%A8+piaciuto%2C++offrimi+un+GinSeng%21+%0A%3B%29&currency_code=EUR">Clicca Qui</a> per offrirmi un GinSeng! <a href="https://www.paypal.com/donate/?business=YU9379GL8VDW4&amount=1.2&no_recurring=1&item_name=Se+il+progetto+ti+%C3%A8+piaciuto%2C++offrimi+un+GinSeng%21+%0A%3B%29&currency_code=EUR"><img src="https://user-images.githubusercontent.com/102819027/233830035-709efa6b-94d7-4ea6-865b-76ab5c1eee6d.png" alt="immagine" style="width:3%;"></a>
-<br>
-oppure scansionare il seguente QR code:<img src="https://github.com/DanRobo76/VMC-HELTY-FLOW/assets/102819027/81ba7208-fbad-4fab-8ceb-cdcf901fdb61.png" alt="immagine" style="width:20%;">
-<br>
+Oppure puoi scansionare il seguente QR code:
+
+<img src="https://github.com/DanRobo76/VMC-HELTY-FLOW/assets/102819027/81ba7208-fbad-4fab-8ceb-cdcf901fdb61.png" alt="QR Code Donazione" width="220">
