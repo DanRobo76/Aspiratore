@@ -166,7 +166,6 @@ Al termine dell’installazione:
 - verificare che il package sia stato correttamente caricato;
 - verificare la presenza delle automazioni importate;
 - verificare la corretta visualizzazione della scheda in dashboard;
-
 </details>
 
 <details>
