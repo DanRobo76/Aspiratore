@@ -74,6 +74,57 @@ Non è una semplice automazione on/off, ma una logica evoluta che supervisiona *
 </details>
 
 <details>
+<summary><strong>Installazione</strong></summary>
+
+<strong>1</strong> Verificare se nel File <strong>configuration.yaml</strong>, contenuto all'interno della cartella <strong>config</strong> di Home Assistant, è presente il seguente Codice: <br>
+<pre style="font-size:10px; background-color: #d9ffcc;">
+  homeassistant:
+    packages: !include_dir_named packages/
+</pre>
+<img src="https://github-production-user-asset-6210df.s3.amazonaws.com/102819027/282229181-536ce9c7-e1ba-4baa-9967-c8a91ebc4920.png" alt="immagine" style="width:40%;">
+, diversamente inserirlo, salvare il File <strong>configuration.yaml</strong> e riavviare Home Assistant (Impostazioni->Strumenti per sviluppatori->Riavvia->Riavvia Home Assistant);<br>
+<br>
+<strong>2</strong> Verificare la presenza della cartella <strong>packages</strong> all'interno della cartella <strong>config</strong> del Server Home Assistant; se non è presente, creare tramite l'**Add-on consigliato:** `File Editor`, l'intero percorso ovvero <strong>\\192.168.1.xxx\config\packages\aspiratore\master</strong>;<br>
+<br>
+<strong>3</strong> All'interno del percorso <strong>\\192.168.1.xxx\config\packages\aspiratore\master</strong> copiare i Files seguenti, presenti nella scheda <strong>CODE</strong> -> <strong>Download ZIP</strong><br>
+<img src="https://github-production-user-asset-6210df.s3.amazonaws.com/102819027/282228959-a62322f6-cc44-4acb-bc54-355e36349009.png" alt="immagine" style="width:30%;">
+
+<pre style="font-size:10px; background-color: #d9ffcc;">
+      - aspiratore_master.yaml
+      - aspiratore_master_automazione_gestione_totale_sistema.txt
+      - aspiratore_master_automazione_verifica_spia_umidita.txt
+      - aspiratore_master_automazione_verifica_spia_rilevamento.txt
+      - aspiratore_master_scheda_manuale_interfaccia.txt
+</pre>
+
+<br>
+<strong>4</strong> In Home Assistant andare in <strong>Impostazioni -> Automazioni e scene -> CREA AUTOMAZIONE -> Crea una nuova automazione</strong> -> cliccare in alto a destra sui <strong>... puntini</strong> -> <strong>modifica in yaml</strong> -> cancellare tutto il codice e incollare il contenuto del file <strong>aspiratore_master_automazione_gestione_totale_sistema.txt</strong>salvare e tornare nuovamente in  <strong>Automazioni e scene</strong>;<br>
+<br>
+<strong>5</strong> Ripetere il Passaggio 5 per i restanti Files:
+<pre style="font-size:10px; background-color: #d9ffcc;">
+      - aspiratore_master_automazione_verifica_spia_umidita.txt
+      - aspiratore_master_automazione_verifica_spia_rilevamento.txt
+</pre>
+<br>
+<strong>7</strong> In Home Assistant andare in <strong>Panoramica</strong> -> cliccare in alto a destra sul <strong>pennino</strong> -> <strong>Aggiungi Scheda</strong> -> <strong>Manuale</strong> -> Selezionare tutto il Codice, cancellare tutto il codice e incollare il contenuto del file <strong>aspiratore_master_scheda_manuale_interfaccia.txt</strong> e salvare.
+<br>
+<strong>8</strong> Per maggiori informazioni andare sul Pannello Informazioni.<br>
+<img src="https://github-production-user-asset-6210df.s3.amazonaws.com/102819027/282228208-01c799a0-b92a-406f-939f-9c06006360a7.png" alt="immagine" style="width:30%;"><br>
+</details>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<details>
 <summary><strong>Configurazione</strong></summary>
   
 La configurazione avviene direttamente da interfaccia tramite:
@@ -83,6 +134,42 @@ La configurazione avviene direttamente da interfaccia tramite:
 
 Questo consente di cambiare dispositivi senza modificare manualmente lo YAML a ogni variazione.
 </details>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 <details>
 <summary><strong>Esonero di responsabilità</strong></summary>
