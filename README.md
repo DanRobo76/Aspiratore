@@ -68,7 +68,7 @@ Non è una semplice automazione on/off, ma una logica evoluta che supervisiona *
 - **[Home Assistant](https://www.home-assistant.io/installation/)**
 - 1 attuatore (`Switch` oppure `Fan`)
 - 1 sensore umidità
-- 1 sensore presenza *(opzionale ma consigliato)*
+- 1 sensore presenza
 <br>
 **Add-on consigliato:** `File Editor`
 </details>
