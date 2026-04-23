@@ -186,8 +186,5 @@ In nessun caso l’Ing. Danilo Robotti potrà essere ritenuto responsabile per d
 </details>
 
 ---
-<p align="center">
-  Se il progetto ti è stato utile e desideri supportarne lo sviluppo, scansiona il QR code qui sotto</p>
-<p align="center">
-  <img src="https://github.com/DanRobo76/VMC-HELTY-FLOW/assets/102819027/81ba7208-fbad-4fab-8ceb-cdcf901fdb61.png" alt="QR Code Donazione" width="220">
-</p>
+<p align="center">Se il progetto ti è stato utile e desideri supportarne lo sviluppo, scansiona il QR code qui sotto</p>
+<p align="center"><img src="https://github.com/DanRobo76/VMC-HELTY-FLOW/assets/102819027/81ba7208-fbad-4fab-8ceb-cdcf901fdb61.png" alt="QR Code Donazione" width="220"></p>
