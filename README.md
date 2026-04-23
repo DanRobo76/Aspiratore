@@ -110,7 +110,7 @@ L’operazione può essere eseguita, ad esempio, tramite l’add-on <strong>File
 All’interno del percorso <strong>\192.168.1.xxx\config\packages\aspiratore\master</strong>, copiare i seguenti file scaricabili dal repository GitHub tramite:
 <strong>Code → Download ZIP</strong>.
 
-<img src="https://github-production-user-asset-6210df.s3.amazonaws.com/102819027/282228959-a62322f6-cc44-4acb-bc54-355e36349009.png" alt="immagine" style="width:30%;">
+<img src="https://github.com/DanRobo76/Aspiratore/blob/main/immagini/Code.jpg" alt="immagine" style="width:30%;">
 
 <pre style="font-size:10px; background-color: #d9ffcc;">
 - aspiratore_master.yaml
