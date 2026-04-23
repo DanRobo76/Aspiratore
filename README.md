@@ -76,37 +76,97 @@ Non è una semplice automazione on/off, ma una logica evoluta che supervisiona *
 <details>
 <summary><strong>Installazione</strong></summary>
 
-<strong>1</strong> Verificare se nel File <strong>configuration.yaml</strong>, contenuto all'interno della cartella <strong>config</strong> del Server Home Assistant, sia presente il seguente Codice: <br>
+<br>
+
+### 1. Abilitare il caricamento dei package in Home Assistant
+Verificare che nel file <strong>configuration.yaml</strong>, presente nella cartella <strong>config</strong> del server Home Assistant, sia riportata la seguente configurazione:
+
 <pre style="font-size:10px; background-color: #d9ffcc;">
-  homeassistant:
-    packages: !include_dir_named packages/
+homeassistant:
+  packages: !include_dir_named packages/
 </pre>
+
 <img src="https://github-production-user-asset-6210df.s3.amazonaws.com/102819027/282229181-536ce9c7-e1ba-4baa-9967-c8a91ebc4920.png" alt="immagine" style="width:40%;">
-, diversamente inserirlo, salvare il File <strong>configuration.yaml</strong> e riavviare Home Assistant (Impostazioni->Strumenti per sviluppatori->Riavvia->Riavvia Home Assistant);<br>
-<br>
-<strong>2</strong> Verificare la presenza della cartella <strong>packages</strong> all'interno della cartella <strong>config</strong> del Server Home Assistant; se non è presente, creare l'intero percorso ovvero <strong>\\192.168.1.xxx\config\packages\aspiratore\master</strong>, tramite l'<strong>Add-on `File Editor`</strong>,<br>
-<br>
-<strong>3</strong> All'interno del percorso <strong>\\192.168.1.xxx\config\packages\aspiratore\master</strong> copiare i Files seguenti, presenti nella scheda <strong>CODE</strong> -> <strong>Download ZIP</strong><br>
+
+Se la configurazione non è presente, inserirla, salvare il file <strong>configuration.yaml</strong> e riavviare Home Assistant seguendo il percorso:
+<strong>Impostazioni → Strumenti per sviluppatori → Riavvia → Riavvia Home Assistant</strong>.
+
+---
+
+### 2. Creare la cartella del package
+Verificare la presenza della cartella <strong>packages</strong> all’interno della directory <strong>config</strong> del server Home Assistant.
+
+Se la cartella non è presente, creare il seguente percorso:
+
+<pre style="font-size:10px; background-color: #d9ffcc;">
+\192.168.1.xxx\config\packages\aspiratore\master
+</pre>
+
+L’operazione può essere eseguita, ad esempio, tramite l’add-on <strong>File Editor</strong>.
+
+---
+
+### 3. Copiare i file del package
+All’interno del percorso <strong>\192.168.1.xxx\config\packages\aspiratore\master</strong>, copiare i seguenti file scaricabili dal repository GitHub tramite:
+<strong>Code → Download ZIP</strong>.
+
 <img src="https://github-production-user-asset-6210df.s3.amazonaws.com/102819027/282228959-a62322f6-cc44-4acb-bc54-355e36349009.png" alt="immagine" style="width:30%;">
 
 <pre style="font-size:10px; background-color: #d9ffcc;">
-      - aspiratore_master.yaml
-      - aspiratore_master_automazione_gestione_totale_sistema.txt
-      - aspiratore_master_automazione_verifica_spia_umidita.txt
-      - aspiratore_master_automazione_verifica_spia_rilevamento.txt
-      - aspiratore_master_scheda_manuale_interfaccia.txt
+- aspiratore_master.yaml
+- aspiratore_master_automazione_gestione_totale_sistema.txt
+- aspiratore_master_automazione_verifica_spia_umidita.txt
+- aspiratore_master_automazione_verifica_spia_rilevamento.txt
+- aspiratore_master_scheda_manuale_interfaccia.txt
 </pre>
 
-<br>
-<strong>4</strong> In Home Assistant andare in <strong>Impostazioni -> Automazioni e scene -> CREA AUTOMAZIONE -> Crea una nuova automazione</strong> -> cliccare in alto a destra sui <strong>... puntini</strong> -> <strong>modifica in yaml</strong> -> cancellare tutto il codice e incollare il contenuto del file <strong>aspiratore_master_automazione_gestione_totale_sistema.txt</strong> salvare e tornare nuovamente in <strong>Automazioni e scene</strong>;<br>
-<br>
-<strong>5</strong> Ripetere il Passaggio <strong>4</strong> per i restanti Files:
+---
+
+### 4. Importare l’automazione principale
+In Home Assistant seguire il percorso:
+
+<strong>Impostazioni → Automazioni e scene → Crea automazione → Crea una nuova automazione</strong>
+
+Successivamente:
+- cliccare in alto a destra sui <strong>tre puntini</strong>;
+- selezionare <strong>Modifica in YAML</strong>;
+- eliminare il contenuto presente;
+- incollare il contenuto del file <strong>aspiratore_master_automazione_gestione_totale_sistema.txt</strong>;
+- salvare l’automazione.
+
+Una volta salvata, tornare alla schermata <strong>Automazioni e scene</strong>.
+
+---
+
+### 5. Importare le altre automazioni
+Ripetere la medesima procedura descritta al punto precedente per i seguenti file:
+
 <pre style="font-size:10px; background-color: #d9ffcc;">
-      - aspiratore_master_automazione_verifica_spia_umidita.txt
-      - aspiratore_master_automazione_verifica_spia_rilevamento.txt
+- aspiratore_master_automazione_verifica_spia_umidita.txt
+- aspiratore_master_automazione_verifica_spia_rilevamento.txt
 </pre>
-<br>
-<strong>6</strong> In Home Assistant andare in <strong>Panoramica</strong> -> cliccare in alto a destra sul <strong>pennino</strong> -> <strong>Aggiungi Scheda</strong> -> <strong>Manuale</strong> -> Selezionare tutto il Codice, cancellare tutto il codice e incollare il contenuto del file <strong>aspiratore_master_scheda_manuale_interfaccia.txt</strong> e salvare.
+
+---
+
+### 6. Importare la scheda Lovelace
+In Home Assistant seguire il percorso:
+
+<strong>Panoramica → Modifica dashboard (icona matita) → Aggiungi scheda → Manuale</strong>
+
+Successivamente:
+- selezionare tutto il codice già presente;
+- eliminarlo;
+- incollare il contenuto del file <strong>aspiratore_master_scheda_manuale_interfaccia.txt</strong>;
+- salvare la scheda.
+
+---
+
+### 7. Verifica finale
+Al termine dell’installazione:
+- verificare che il package sia stato correttamente caricato;
+- verificare la presenza delle automazioni importate;
+- verificare la corretta visualizzazione della scheda in dashboard;
+
 </details>
 
 <details>
