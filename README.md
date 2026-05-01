@@ -1,9 +1,15 @@
-# ASPIRATORE MASTER - Smart Automation for Home Assistant
+<p align="center">
+  <img src="https://github.com/DanRobo76/Aspiratore/blob/main/immagini/Collage%20Aspiratore.png" alt="ASPIRATORE MASTER" width="100%">
+</p>
 
-Scegli la lingua / Choose your language:
+---
+
+<p align="center">
+  <strong>Scegli la lingua / Choose your language:</strong>
+</p>
 
 <details>
-  <summary>🇮🇹 <strong>Italiano (Clicca per espandere)</strong></summary>
+  <summary>🇮🇹 <strong>ITALIANO (Clicca per espandere)</strong></summary>
 
 <h1 align="center">
   ASPIRATORE MASTER 
@@ -11,6 +17,7 @@ Scegli la lingua / Choose your language:
     <img src="https://user-images.githubusercontent.com/102819027/233830183-9c55677d-b6a1-4153-8d3c-219394ec8720.png" alt="Home Assistant" width="80">
   </a>
 </h1>
+
 <p align="center">
   <strong>La soluzione professionale per automatizzare aspiratori e ventilatori in Home Assistant.</strong><br>
   Controllo intelligente, logica robusta e ventilazione davvero affidabile.
@@ -18,10 +25,6 @@ Scegli la lingua / Choose your language:
 
 <p align="center">
   <a href="mailto:danilo.robotti@gmail.com">danilo.robotti@gmail.com</a>
-</p>
-
-<p align="center">
-  <img src="https://github.com/DanRobo76/Aspiratore/blob/main/immagini/Collage%20Aspiratore.png" alt="ASPIRATORE MASTER" width="100%">
 </p>
 
 ---
@@ -205,7 +208,7 @@ In nessun caso l’Ing. Danilo Robotti potrà essere ritenuto responsabile per d
 </details>
 
 <details>
-  <summary>🇺🇸 <strong>English (Click to expand)</strong></summary>
+  <summary>🇺🇸 <strong>ENGLISH (Click to expand)</strong></summary>
 
 <h1 align="center">
   ASPIRATORE MASTER 
@@ -213,6 +216,7 @@ In nessun caso l’Ing. Danilo Robotti potrà essere ritenuto responsabile per d
     <img src="https://user-images.githubusercontent.com/102819027/233830183-9c55677d-b6a1-4153-8d3c-219394ec8720.png" alt="Home Assistant" width="80">
   </a>
 </h1>
+
 <p align="center">
   <strong>The professional solution to automate exhaust fans and ventilators in Home Assistant.</strong><br>
   Smart control, robust logic, and truly reliable ventilation.
@@ -220,10 +224,6 @@ In nessun caso l’Ing. Danilo Robotti potrà essere ritenuto responsabile per d
 
 <p align="center">
   <a href="mailto:danilo.robotti@gmail.com">danilo.robotti@gmail.com</a>
-</p>
-
-<p align="center">
-  <img src="https://github.com/DanRobo76/Aspiratore/blob/main/immagini/Collage%20Aspiratore.png" alt="ASPIRATORE MASTER" width="100%">
 </p>
 
 ---
