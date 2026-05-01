@@ -1,4 +1,4 @@
-vtype: vertical-stack
+type: vertical-stack
 cards:
   - type: conditional
     conditions:
@@ -945,7 +945,10 @@ cards:
                   Debug Sistema                   {% set s =
                   states('input_boolean.aspiratore_master_debug') %}{% if s ==
                   'on' %}🟢{% elif s == 'off' %}🔴{% else %}🟡{% endif %} {{ s
-                  }} </pre>
+                  }} 
+
+
+                  </pre>
 
                   </p> </details>
 
