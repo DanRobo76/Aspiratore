@@ -2,7 +2,7 @@
 
 |          Aspiratore Release              | Supportato da Home Assistant (Core)     |
 | ---------------------------------------- | ----------------------------------------|
-|  :white_check_mark: v.1.0.0              | :white_check_mark:   Ver. 2026.04.4     |
+|  :white_check_mark: v.1.0.0              | :white_check_mark:   Ver. 2026.4.4      |
 #
 
 ### - Rapporto Errori
