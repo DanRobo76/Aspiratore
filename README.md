@@ -1,3 +1,12 @@
+<p align="center">
+  <a href="#italiano">Italiano</a> | 
+  <a href="#english">English</a>
+</p>
+
+---
+
+<div id="italiano">
+
 <h1 align="center">
   ASPIRATORE MASTER 
   <a href="https://www.home-assistant.io/" target="_blank">
@@ -194,3 +203,206 @@ In nessun caso l’Ing. Danilo Robotti potrà essere ritenuto responsabile per d
   scansiona il QR code qui sotto
 </p>
 <p align="center"><img src="https://github.com/DanRobo76/VMC-HELTY-FLOW/assets/102819027/81ba7208-fbad-4fab-8ceb-cdcf901fdb61.png" alt="QR Code Donazione" width="220"></p>
+
+</div>
+
+<div id="english">
+
+<h1 align="center">
+  ASPIRATORE MASTER 
+  <a href="https://www.home-assistant.io/" target="_blank">
+    <img src="https://user-images.githubusercontent.com/102819027/233830183-9c55677d-b6a1-4153-8d3c-219394ec8720.png" alt="Home Assistant" width="80">
+  </a>
+</h1>
+<p align="center">
+  <strong>The professional solution to automate exhaust fans and ventilators in Home Assistant.</strong><br>
+  Smart control, robust logic, and truly reliable ventilation.
+</p>
+
+<p align="center">
+  <a href="mailto:danilo.robotti@gmail.com">danilo.robotti@gmail.com</a>
+</p>
+
+<p align="center">
+  <img src="https://github.com/DanRobo76/Aspiratore/blob/main/immagini/Collage%20Aspiratore.png" alt="ASPIRATORE MASTER" width="100%">
+</p>
+
+---
+<details>
+<summary><strong>Why ASPIRATORE MASTER</strong></summary>
+  
+**ASPIRATORE MASTER** is an advanced Home Assistant package designed for the smart management of exhaust fans and ventilators (`Switch` / `Fan`). It is ideal for **windowless bathrooms**, laundries, technical rooms, and environments where air exchange must be automatic, consistent with real conditions, and reliable over time.
+<br>
+It is not just a simple on/off automation, but an evolved logic that supervises **sensors, actuators, and timers** to ensure stable, continuous, and optimized operation.
+</details>
+
+<details>
+<summary><strong>What makes it different</strong></summary>
+  
+| Function | Advantage |
+|---|---|
+| **Dynamic entity selection** | Simple configuration directly from the interface |
+| **Advanced humidity control** | Activation only after remaining above threshold |
+| **Presence management** | Smarter ventilation during and after use |
+| **Advanced timers** | Precise control of dwell time, duration, and reactivation |
+| **Real/logical state synchronization** | Greater reliability even in case of unintended shutdowns |
+| **Fail-safe architecture** | Robust management of anomalies, invalid states, and inconsistencies |
+</details>
+
+<details>
+<summary><strong>Main Benefits</strong></summary>
+  
+- Intuitive configuration via dedicated selectors
+- Compatible with `Switch` and `Fan` actuators
+- Designed for real-world use, not just basic automations
+- Reduces false starts, inconsistencies, and unstable behaviors
+- Transforms a traditional exhaust fan into a smart ventilation system
+- Ideal for use with smart relays, such as **Shelly**
+</details>
+
+<details>
+<summary><strong>Typical Scenario</strong></summary>
+  
+  A classic use case is a **windowless bathroom** with:
+- traditional exhaust fan
+- humidity sensor
+- presence sensor
+- smart relay
+
+**Result:** fully automatic ventilation—smarter, more reliable, and more professional than standard logic.
+</details>
+
+<details>
+  <summary><strong>Requirements</strong></summary>
+  
+- **[Home Assistant](https://www.home-assistant.io/installation/)**
+- 1 actuator (`Switch` or `Fan`)
+- 1 humidity sensor
+- 1 presence sensor
+<br>
+**Recommended Add-on:** `File Editor`
+</details>
+
+<details>
+<summary><strong>Installation</strong></summary>
+
+<br>
+
+### 1. Enable package loading in Home Assistant
+Ensure that the <strong>configuration.yaml</strong> file, located in the <strong>config</strong> folder of your Home Assistant server, contains the following configuration:
+
+<pre style="font-size:10px; background-color: #d9ffcc;">
+homeassistant:
+  packages: !include_dir_named packages/
+</pre>
+
+<img src="https://github-production-user-asset-6210df.s3.amazonaws.com/102819027/282229181-536ce9c7-e1ba-4baa-9967-c8a91ebc4920.png" alt="image" style="width:40%;">
+
+If the configuration is missing, add it, save the <strong>configuration.yaml</strong> file, and restart Home Assistant by navigating to:
+<strong>Settings → Developer Tools → Restart → Restart Home Assistant</strong>.
+
+---
+
+### 2. Create the package folder
+Verify the existence of the <strong>packages</strong> folder within the <strong>config</strong> directory of your Home Assistant server.
+
+If the folder does not exist, create the following path:
+
+<pre style="font-size:10px; background-color: #d9ffcc;">
+\192.168.1.xxx\config\packages\aspiratore\master
+</pre>
+
+This can be done, for example, using the <strong>File Editor</strong> add-on.
+
+---
+
+### 3. Copy the package files
+Within the <strong>\192.168.1.xxx\config\packages\aspiratore\master</strong> path, copy the following files downloadable from the GitHub repository via:
+<strong>Code → Download ZIP</strong>.
+
+<img src="https://github.com/DanRobo76/Aspiratore/blob/main/immagini/Code.jpg" alt="image" style="width:30%;">
+
+<pre style="font-size:10px; background-color: #d9ffcc;">
+- aspiratore_master.yaml
+- aspiratore_master_automazione_gestione_totale_sistema.txt
+- aspiratore_master_automazione_verifica_spia_umidita.txt
+- aspiratore_master_automazione_verifica_spia_rilevamento.txt
+- aspiratore_master_scheda_manuale_interfaccia.txt
+</pre>
+
+---
+
+### 4. Import the main automation
+In Home Assistant, navigate to:
+
+<strong>Settings → Automations & Scenes → Create Automation → Create New Automation</strong>
+
+Then:
+- click the <strong>three dots</strong> in the top right corner;
+- select <strong>Edit in YAML</strong>;
+- delete the existing content;
+- paste the content of the file <strong>aspiratore_master_automazione_gestione_totale_sistema.txt</strong>;
+- save the automation.
+
+Once saved, return to the <strong>Automations & Scenes</strong> screen.
+
+---
+
+### 5. Import other automations
+Repeat the same procedure described in the previous step for the following files:
+
+<pre style="font-size:10px; background-color: #d9ffcc;">
+- aspiratore_master_automazione_verifica_spia_umidita.txt
+- aspiratore_master_automazione_verifica_spia_rilevamento.txt
+</pre>
+
+---
+
+### 6. Import the Lovelace card
+In Home Assistant, navigate to:
+
+<strong>Overview → Edit Dashboard (pencil icon) → Add Card → Manual</strong>
+
+Then:
+- select all existing code;
+- delete it;
+- paste the content of the file <strong>aspiratore_master_scheda_manuale_interfaccia.txt</strong>;
+- save the card.
+
+---
+
+### 7. Final Verification
+At the end of the installation:
+- verify that the package has been correctly loaded;
+- verify the presence of the imported automations;
+- verify the correct display of the card in the dashboard.
+</details>
+
+<details>
+<summary><strong>Configuration</strong></summary>
+  
+Configuration is done directly through the interface using:
+- `Actuator Selection`
+- `Humidity Sensor Selection`
+- `Presence Sensor Selection`
+
+This allows you to change devices without manually modifying the YAML for every change.
+</details>
+
+<details>
+<summary><strong>Disclaimer</strong></summary>
+
+In no event shall Eng. Danilo Robotti be held liable for any direct, indirect, or consequential damages arising from the use of this software.
+</details>
+
+---
+<p align="center">
+  If this project was useful and you wish to 
+  <a href="https://www.paypal.com/donate/?business=YU9379GL8VDW4&amount=1.2&no_recurring=1&item_name=Se+il+progetto+ti+%C3%A8+piaciuto%2C++offrimi+un+GinSeng%21+%0A%3B%29&currency_code=EUR">
+    support its development
+  </a>,
+  scan the QR code below
+</p>
+<p align="center"><img src="https://github.com/DanRobo76/VMC-HELTY-FLOW/assets/102819027/81ba7208-fbad-4fab-8ceb-cdcf901fdb61.png" alt="Donation QR Code" width="220"></p>
+
+</div>
