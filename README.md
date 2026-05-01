@@ -1,11 +1,9 @@
-<p align="center">
-  <a href="#italiano">Italiano</a> | 
-  <a href="#english">English</a>
-</p>
+# ASPIRATORE MASTER - Smart Automation for Home Assistant
 
----
+Scegli la lingua / Choose your language:
 
-<div id="italiano">
+<details>
+  <summary>🇮🇹 <strong>Italiano (Clicca per espandere)</strong></summary>
 
 <h1 align="center">
   ASPIRATORE MASTER 
@@ -204,9 +202,10 @@ In nessun caso l’Ing. Danilo Robotti potrà essere ritenuto responsabile per d
 </p>
 <p align="center"><img src="https://github.com/DanRobo76/VMC-HELTY-FLOW/assets/102819027/81ba7208-fbad-4fab-8ceb-cdcf901fdb61.png" alt="QR Code Donazione" width="220"></p>
 
-</div>
+</details>
 
-<div id="english">
+<details>
+  <summary>🇺🇸 <strong>English (Click to expand)</strong></summary>
 
 <h1 align="center">
   ASPIRATORE MASTER 
@@ -405,4 +404,4 @@ In no event shall Eng. Danilo Robotti be held liable for any direct, indirect, o
 </p>
 <p align="center"><img src="https://github.com/DanRobo76/VMC-HELTY-FLOW/assets/102819027/81ba7208-fbad-4fab-8ceb-cdcf901fdb61.png" alt="Donation QR Code" width="220"></p>
 
-</div>
+</details>
