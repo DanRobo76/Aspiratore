@@ -1,0 +1,959 @@
+###########################################################################################################################################################################################################################
+#                                                                                                                                                                                                                         #
+#                                                                                                      ASPIRATORE V.1.0.2                                                                                                 #
+#                                                                                                                                                                                                                         #
+# SVILUPPATO DA ING. DANILO ROBOTTI, ALLE PRIME ARMI CON HOME ASSISTANT :)                                                                                                                                                #
+#                                                                                                                                                                                                                         #
+# LICENZA D'USO – USO PERSONALE NON COMMERCIALE                                                                                                                                                                           #
+#                                                                                                                                                                                                                         #
+# COPYRIGHT © ING. DANILO ROBOTTI                                                                                                                                                                                         #
+#                                                                                                                                                                                                                         #
+# TUTTI I DIRITTI RISERVATI.                                                                                                                                                                                              #
+#                                                                                                                                                                                                                         #
+# QUESTA LICENZA SI APPLICA A TUTTE LE VERSIONI DEL PRESENTE SOFTWARE CHE INCLUDE I SEGUENTI FILES:                                                                                                                       #
+#   - aspiratore_master.yaml                                                                                                                                                                                              #
+#   - aaspiratore_master_automazione_gestione_totale_sistema.txt                                                                                                                                                          #
+#   - aspiratore_master_automazione_verifica_spia_umidita.txt                                                                                                                                                             #
+#   - aspiratore_master_automazione_verifica_spia_rilevamento.txt                                                                                                                                                         #
+#   - aspiratore_master_scheda_manuale_interfaccia.txt                                                                                                                                                                    #
+# A PARTIRE DALLA PRIMA VERSIONE PUBBLICATA E SUCCESSIVE                                                                                                                                                                  #
+#                                                                                                                                                                                                                         #
+# È CONCESSO:                                                                                                                                                                                                             #
+#  - L'UTILIZZO DEL SOFTWARE ESCLUSIVAMENTE PER FINI PERSONALI E NON COMMERCIALI                                                                                                                                          #
+#  - LA DISTRIBUZIONE LIBERA, PURCHÉ VENGA MANTENUTO IL PRESENTE TESTO DI LICENZA E SIA RISPETTATO IL DIVIETO D'USO COMMERCIALE                                                                                           #
+#                                                                                                                                                                                                                         #
+# QUALSIASI USO NON AUTORIZZATO AD USO COMMERCIALE COSTITUISCE VIOLAZIONE DEL DIRITTO D'AUTORE E POTRÀ ESSERE PERSEGUITO LEGALMENTE                                                                                       #
+#                                                                                                                                                                                                                         #
+# PER RICHIESTE DI LICENZA COMMERCIALE O USI PARTICOLARI, CONTATTARE L’AUTORE: danilo.robotti@gmail.com                                                                                                                   #
+#                                                                                                                                                                                                                         #
+# VERSIONE LICENZA: 1.0                                                                                                                                                                                                   #
+# DATA: 20 APRILE 2026                                                                                                                                                                                                    #
+#                                                                                                                                                                                                                         #
+# Esonero di Responsabilità                                                                                                                                                                                               #
+# In nessun caso lo sviluppatore sarà responsabile di danneggiamenti diretti, indiretti o conseguenti, correlati a difetti del presente software                                                                          #
+# L’usufruitore ha l’onere e la responsabilità della scelta, dell’installazione, dell’uso e della gestione del software al fine del raggiungimento del risultato prefissatosi                                             #
+#                                                                                                                                                                                                                         #
+###########################################################################################################################################################################################################################
+
+
+################### Inizio Creazione Sensori Principali della aspiratore  #################################################################################################################################################
+sensor:
+  - platform: rest
+    name: "Aspiratore Master Versione Repository"                              # [CONFIGURAZIONE 0 RICHIAMI] [INTERFACCIA, PIU' RICHIAMI] [AUTOMAZIONE, PIU’ RICHIAMI] SENSORE PER VISUALIZZARE LA VERSIONE CORRENTE NEL REPOSITORY DI GITHUB, DA CONFRONTARE CON LA VERSIONE CORRENTE INSTALLATA IN HOME ASSISTANT TRAMITE AUTOMAZIONE
+    unique_id: aspiratore_master_versione_repository
+    resource: https://api.github.com/repos/DanRobo76/Aspiratore/releases/latest
+    value_template: >-
+      {% if value_json and value_json.tag_name %}
+        {{ value_json.tag_name }}
+      {% else %}
+        Errore Connessione
+      {% endif %}
+    headers:
+      Accept: application/vnd.github.v3+json
+      Content-Type: application/json
+      User-Agent: Home Assistant REST sensor
+    scan_interval: 86400                                                        # OGNI N° SECONDI RIPETE LA SCANSIONE
+    timeout: 15
+    icon: mdi:check-decagram-outline
+
+template:
+################### Inizio Creazione Sensori di Lettura UMIDITA' e ATTUATORI (Switch/Fan) , INTERNA INSTALLATE IN HOME ASSISTANT  #########################################################################################
+  - sensor:
+      - name: "Aspiratore Master Versione Corrente"
+        unique_id: aspiratore_master_versione_corrente
+        state: "v.1.0.2"
+        icon: mdi:check-decagram-outline
+
+  - sensor:
+      - name: "ASPIRATORE Master Umidità Interna Selezionata"
+        unique_id: aspiratore_master_umidita_interna_selezionata
+        state: >
+          {% set entity_id = states('input_select.aspiratore_master_selected_humidity_internal_entity') %}
+          {% set offset = states('input_number.aspiratore_master_offset_umidita') | float(0) %}
+          
+          {% if entity_id and states(entity_id) not in ["none", "", "unknown", "unavailable", "Aggiorna Elenco Entità Umidità Interna"] %}
+            {% set valore_reale = states(entity_id) | float(0) %}
+            {% set calcolo = (valore_reale + offset) | round(1) %}
+            {# Limita il valore tra 0 e 100 #}
+            {{ ([0, calcolo, 100] | sort)[1] }}
+          {% else %}
+            {{ none }}
+          {% endif %}
+        unit_of_measurement: "%"
+        device_class: humidity
+        icon: mdi:water-percent
+
+  - sensor:
+      - name: "ASPIRATORE Master Nome Attuatore Selezionato"
+        unique_id: aspiratore_master_nome_attuatore_selezionato
+        state: >
+          {% set id_reale = states('input_select.aspiratore_master_selected_actuator_entity') %}
+          {% if id_reale not in ["none", "", "unknown", "sconosciuto", "Non disponibile", "unavailable", "Aggiorna Elenco Entità Attuatore (Switch/Fan)"] %}
+            {% set nome = state_attr(id_reale, 'friendly_name') %}
+            {{ nome if nome not in ["none", ''] else id_reale }}
+          {% else %}
+            Aggiorna Entità
+          {% endif %}
+        icon: mdi:memory
+
+  - sensor:
+      - name: "ASPIRATORE Master Nome Rilevamento Selezionato"
+        unique_id: aspiratore_master_nome_rilevamento_selezionato
+        state: >
+          {% set id_reale = states('input_select.aspiratore_master_selected_motion_sensor_internal_entity') %}
+          {% if id_reale not in ["none", "", "unknown", "sconosciuto", "Non disponibile", "unavailable", "Aggiorna Elenco Entità Rilevamento"] %}
+            {% set nome = state_attr(id_reale, 'friendly_name') %}
+            {{ nome if nome not in ["none", ''] else id_reale }}
+          {% else %}
+            Aggiorna Entità
+          {% endif %}
+        icon: mdi:memory
+
+  - sensor:
+      - name: "ASPIRATORE Master Nome Umidità Interna Selezionata"
+        unique_id: aspiratore_master_nome_umidita_interna_selezionata
+        state: >
+          {% set id_reale = states('input_select.aspiratore_master_selected_humidity_internal_entity') %}
+          {% if id_reale not in ["none", "", "unknown", "sconosciuto", "Non disponibile", "unavailable", "Aggiorna Elenco Entità Umidità Interna"] %}
+            {% set nome = state_attr(id_reale, 'friendly_name') %}
+            {{ nome if nome not in ["none", ''] else id_reale }}
+          {% else %}
+            Aggiorna Entità
+          {% endif %}
+        icon: mdi:memory
+
+  - binary_sensor:
+      - name: "ASPIRATORE Master Valore Attuatore Selezionato"
+        unique_id: aspiratore_master_valore_attuatore_selezionato
+        device_class: running
+        state: >
+          {% set entity_id = states('input_select.aspiratore_master_selected_actuator_entity') %}
+          {% if entity_id and states(entity_id) not in ["none", "", "unknown", "sconosciuto", "Non disponibile", "unavailable", "Aggiorna Elenco Entità Attuatore (Switch/Fan)"] %}
+            {{ states(entity_id) }}
+          {% else %}
+            off
+          {% endif %}
+        icon: mdi:memory
+
+  - binary_sensor:
+      - name: "ASPIRATORE Master Stato Rilevamento Selezionato"
+        unique_id: aspiratore_master_stato_rilevamento_selezionato
+        device_class: motion
+        state: >
+          {% set entity_id = states('input_select.aspiratore_master_selected_motion_sensor_internal_entity') %}
+          {% if entity_id and states(entity_id) not in ["none", "", "unknown", "sconosciuto", "Non disponibile", "unavailable", "Aggiorna Elenco Entità Rilevamento"] %}
+            {{ states(entity_id) }}
+          {% else %}
+            off
+          {% endif %}
+        icon: mdi:memory
+
+  - binary_sensor:
+      - name: "Aspiratore Master Errore Configurazione"
+        unique_id: aspiratore_master_errore_configurazione
+        device_class: problem
+        state: >
+          {{
+            states('binary_sensor.aspiratore_master_stato_rilevamento_selezionato') in [
+              'unknown', 'unavailable', 'none', '', 'sconosciuto', 'Non disponibile',
+              'Aggiorna Elenco Entità Rilevamento',
+              'Aggiorna Elenco Entità Attuatore (Switch/Fan)',
+              'Aggiorna Elenco Entità Umidità Interna'
+            ]
+            or
+            states('input_select.aspiratore_master_selected_motion_sensor_internal_entity') in [
+              'unknown', 'unavailable', 'none', '', 'sconosciuto', 'Non disponibile',
+              'Aggiorna Elenco Entità Rilevamento',
+              'Aggiorna Elenco Entità Attuatore (Switch/Fan)',
+              'Aggiorna Elenco Entità Umidità Interna'
+            ]
+            or
+            states('input_select.aspiratore_master_selected_actuator_entity') in [
+              'unknown', 'unavailable', 'none', '', 'sconosciuto', 'Non disponibile',
+              'Aggiorna Elenco Entità Rilevamento',
+              'Aggiorna Elenco Entità Attuatore (Switch/Fan)',
+              'Aggiorna Elenco Entità Umidità Interna'
+            ]
+            or
+            states('input_select.aspiratore_master_selected_humidity_internal_entity') in [
+              'unknown', 'unavailable', 'none', '', 'sconosciuto', 'Non disponibile',
+              'Aggiorna Elenco Entità Rilevamento',
+              'Aggiorna Elenco Entità Attuatore (Switch/Fan)',
+              'Aggiorna Elenco Entità Umidità Interna'
+            ]
+            or
+            states('sensor.aspiratore_master_umidita_interna_selezionata') in [
+              'unknown', 'unavailable', 'none', '', 'sconosciuto', 'Non disponibile',
+              'Aggiorna Elenco Entità Rilevamento',
+              'Aggiorna Elenco Entità Attuatore (Switch/Fan)',
+              'Aggiorna Elenco Entità Umidità Interna'
+            ]
+          }}
+        icon: mdi:fan-alert
+################### FINE Creazione Sensori di Lettura TEMPERATURA ESTERNA, INTERNA E UMIDITA' ESTERNA, INTERNA INSTALLATE IN HOME ASSISTANT  ###############################################################################
+
+################### Inizio Creazione Etichette Interfaccia Lovelace ########################################################################################################################################################
+input_text:
+  aspiratore_master_last_actuator_entity:
+    name: "Ultima Entità Attuatore Valido"
+    icon: mdi:form-textbox
+
+  aspiratore_master_last_humidity_internal_entity:
+    name: "Ultima Entità Umidità interna Selezionata"
+    icon: mdi:form-textbox
+    
+  aspiratore_master_last_motion_sensor_internal_entity:
+    name: "Ultima Entità Rilevamento Selezionata"
+    icon: mdi:form-textbox
+
+input_select:
+  aspiratore_master_selected_actuator_entity:                                  # [CONFIGURAZIONE PIU' RICHIAMI] [AUTOMAZIONE, PIU' RICHIAMI] [INTERFACCIA, PIU' RICHIAMI] SENSORE DI MEMORIZZAZIONE DI TUTTE LE ENTITA' SWITCH/FAN' INSTALLATI IN HOME ASSISTANT
+    name: Seleziona Entità Attuatore (Switch/Fan)
+    options:
+      - "Aggiorna Elenco Entità Attuatore (Switch/Fan)"
+    icon: mdi:form-textbox
+
+  aspiratore_master_selected_humidity_internal_entity:                         # [CONFIGURAZIONE PIU' RICHIAMI] [AUTOMAZIONE, PIU' RICHIAMI] [INTERFACCIA, PIU' RICHIAMI] SENSORE DI MEMORIZZAZIONE DI TUTTE LE ENTITA' DI UMIDITA' INSTALLATI IN HOME ASSISTANT
+    name: Seleziona Entità Umidità
+    options:
+      - "Aggiorna Elenco Entità Umidità Interna"
+    icon: mdi:form-textbox
+
+  aspiratore_master_selected_motion_sensor_internal_entity:                    # [CONFIGURAZIONE PIU' RICHIAMI] [AUTOMAZIONE, PIU' RICHIAMI] [INTERFACCIA, PIU' RICHIAMI] SENSORE DI MEMORIZZAZIONE DI TUTTE LE ENTITA' DI RILEVAMENTO' INSTALLATI IN HOME ASSISTANT
+    name: Seleziona Entità di Rilevamento
+    options:
+      - "Aggiorna Elenco Entità Rilevamento"
+    icon: mdi:form-textbox
+
+input_number:
+  aspiratore_master_offset_umidita:                                           # [CONFIGURAZIONE, PIU’ RICHIAMI] [INTERFACCIA PIU’ RICHIAMI] SENSORE DI MEMORIZZAZIONE DELL'OFFSET PER L'UMIDITA' CHE VERRA' SOMMATA NEL SENSORE aspiratore_master_umidita_interna_selezionata
+    name: "Offset Umidità"
+    min: -100
+    max: 100
+    step: 0.1
+    unit_of_measurement: "%"
+    icon: mdi:counter
+
+  aspiratore_master_umidita_avvio:                                             # [CONFIGURAZIONE, PIU’ RICHIAMI] [INTERFACCIA PIU’ RICHIAMI] SENSORE DI AVVIO DELL'ASPIRATORE PER L'UMIDITA' INTERNA RILEVATA
+    name: "Soglia Umidità"
+    min: 0
+    max: 100
+    step: 0.1
+    unit_of_measurement: "%"
+    icon: mdi:counter
+
+  aspiratore_master_durata_umidita_per_attivazione:
+    name: "Durata Umidità"
+    min: 1
+    max: 86340                                                                # 24 ore - 1 minuto
+    step: 1
+    unit_of_measurement: 's'
+    mode: box
+    icon: mdi:counter
+
+  aspiratore_master_intervallo_riprova_umidita:
+    name: "Durata Controllo Aspiratore"
+    min: 1
+    max: 86340                                                                # 24 ore - 1 minuto
+    step: 1
+    unit_of_measurement: 's'
+    mode: box
+    icon: mdi:counter
+
+  aspiratore_master_durata_rilevamenti_per_attivazione:
+    name: "Durata Aspirazione"
+    min: 1
+    max: 86340                                                                # 24 ore - 1 minuto
+    step: 1
+    unit_of_measurement: 's'
+    mode: box
+    icon: mdi:counter
+
+  aspiratore_master_intervallo_riprova_rilevamento:
+    name: "Durata Controllo Aspiratore"
+    min: 1
+    max: 86340                                                                # 24 ore - 1 minuto
+    step: 1
+    unit_of_measurement: 's'
+    mode: box
+    icon: mdi:counter
+
+  aspiratore_master_durata_aspirazione_per_umidita:
+    name: "Durata Aspirazione"
+    min: 1
+    max: 86340                                                                # 24 ore - 1 minuto
+    step: 1
+    unit_of_measurement: 's'
+    mode: box
+    icon: mdi:counter
+################### Fine Creazione Etichette Interfaccia Lovelace  #########################################################################################################################################################
+
+################### Inizio Creazione Switch Booleani impiegati nell'Interfaccia Lovelace per mostrare o meno le Opzioni ####################################################################################################
+input_boolean:
+  aspiratore_master_finestra_impostazioni_generali:                            # [CONFIGURAZIONE 0 RICHIAMI] [AUTOMAZIONE, PIU' RICHIAMI] [INTERFACCIA, PIU' RICHIAMI]
+    name: "Impostazioni Generali"
+    initial: false
+    icon: mdi:memory
+
+  aspiratore_master_finestra_impostazioni_umidita:                             # [CONFIGURAZIONE 0 RICHIAMI] [AUTOMAZIONE, PIU' RICHIAMI] [INTERFACCIA, PIU' RICHIAMI]
+    name: "Impostazioni Umidità"
+    initial: false
+    icon: mdi:water-percent
+
+  aspiratore_master_finestra_impostazioni_rilevamento:                         # [CONFIGURAZIONE 0 RICHIAMI] [AUTOMAZIONE, PIU' RICHIAMI] [INTERFACCIA, PIU' RICHIAMI]
+    name: "Impostazioni Rilevamento"
+    initial: false
+    icon: mdi:motion-sensor
+
+  aspiratore_master_finestra_impostazioni_informazioni:                        # [CONFIGURAZIONE 0 RICHIAMI] [AUTOMAZIONE, PIU' RICHIAMI] [INTERFACCIA, PIU' RICHIAMI]
+    name: "Informazioni"
+    initial: false
+    icon: mdi:information-slab-box
+
+  aspiratore_master_mostra_nascondi_aspiratore_applicazione:                   # [CONFIGURAZIONE 0 RICHIAMI] [AUTOMAZIONE, PIU' RICHIAMI] [INTERFACCIA, PIU' RICHIAMI]  SENSORE BOOLEANO PER MOSTRARE O MENO IL PANNELLO DELL'APPLICAZIONE
+    name: "Interruttore Impostazioni Rilevamento"
+    icon: mdi:toggle-switch-variant-off
+
+  aspiratore_master_accendi_spegni_aspiratore:                                 # [CONFIGURAZIONE 0 RICHIAMI] [AUTOMAZIONE, PIU' RICHIAMI] [INTERFACCIA, PIU' RICHIAMI]  SENSORE BOOLEANO DI ACCENSIONE O SPEGNIMENTO DELL'ASPIRATORE
+    name: "Interruttore Aspiratore"
+    icon: mdi:toggle-switch-variant-off
+
+  aspiratore_master_accendi_spegni_aspiratore_impostazioni_umidita:            # [CONFIGURAZIONE 0 RICHIAMI] [AUTOMAZIONE, PIU' RICHIAMI] [INTERFACCIA, PIU' RICHIAMI]  SENSORE BOOLEANO DI ACCENSIONE O SPEGNIMENTO PANNELLO OPZIONI CORRELATI ALL'UMIDITA'
+    name: "Interruttore Impostazioni Umidità"
+    icon: mdi:toggle-switch-variant-off
+    
+  aspiratore_master_accendi_spegni_aspiratore_impostazioni_rilevamento:        # [CONFIGURAZIONE 0 RICHIAMI] [AUTOMAZIONE, PIU' RICHIAMI] [INTERFACCIA, PIU' RICHIAMI]  SENSORE BOOLEANO DI ACCENSIONE O SPEGNIMENTO PANNELLO OPZIONI CORRELATI AL rilevamento
+    name: "Interruttore Impostazioni Rilevamento"
+    icon: mdi:toggle-switch-variant-off
+
+  aspiratore_master_spia_umidita:                                              # [CONFIGURAZIONE 0 RICHIAMI] [AUTOMAZIONE, PIU' RICHIAMI] [INTERFACCIA, PIU' RICHIAMI]  SENSORE BOOLEANO DI ACCENSIONE O SPEGNIMENTO SPIA UMIDITA'
+    name: "Spia Umidità"
+    icon: mdi:water-percent
+
+  aspiratore_master_spia_rilevamento:                                          # [CONFIGURAZIONE 0 RICHIAMI] [AUTOMAZIONE, PIU' RICHIAMI] [INTERFACCIA, PIU' RICHIAMI]  SENSORE BOOLEANO DI ACCENSIONE O SPEGNIMENTO SPIA RILEVAZIONE
+    name: "Spia Rilevamento"
+    icon: mdi:motion-sensor
+
+  aspiratore_master_impostazione_controllo_stato_umidita:                      # [CONFIGURAZIONE 0 RICHIAMI] [AUTOMAZIONE, PIU' RICHIAMI] [INTERFACCIA, PIU' RICHIAMI]  SENSORE BOOLEANO DI ACCENSIONE O SPEGNIMENTO CORRELATO ALLA VERIFICA UMIDITA' CICLICAMENTE
+    name: "Controllo Stato Aspiratore"
+    icon: mdi:toggle-switch-variant-off
+
+  aspiratore_master_impostazione_controllo_stato_rilevamento:                      # [CONFIGURAZIONE 0 RICHIAMI] [AUTOMAZIONE, PIU' RICHIAMI] [INTERFACCIA, PIU' RICHIAMI]  SENSORE BOOLEANO DI ACCENSIONE O SPEGNIMENTO CORRELATO ALLA VERIFICA UMIDITA' CICLICAMENTE
+    name: "Controllo Stato Aspiratore"
+    icon: mdi:toggle-switch-variant-off
+
+  aspiratore_master_impostazione_tempo_massimo_aspiratore_umidita:                     # [CONFIGURAZIONE 0 RICHIAMI] [AUTOMAZIONE, PIU' RICHIAMI] [INTERFACCIA, PIU' RICHIAMI]  SENSORE BOOLEANO DI ACCENSIONE O SPEGNIMENTO CORRELATO ALLA MASSIMA DURATA DI ASPIRAZIONE
+    name: "Spegnimento Automatico Aspiratore"
+    icon: mdi:toggle-switch-variant-off
+
+  aspiratore_master_impostazione_tempo_massimo_aspiratore_rilevatore:          # [CONFIGURAZIONE 0 RICHIAMI] [AUTOMAZIONE, PIU' RICHIAMI] [INTERFACCIA, PIU' RICHIAMI]  SENSORE BOOLEANO DI ACCENSIONE O SPEGNIMENTO CORRELATO ALLA MASSIMA DURATA DI ASPIRAZIONE
+    name: "Spegnimento Automatico Aspiratore"
+    icon: mdi:toggle-switch-variant-off
+
+  aspiratore_master_evita_ciclo_loop_umidita:                                  # [CONFIGURAZIONE 0 RICHIAMI] [AUTOMAZIONE, PIU' RICHIAMI] [INTERFACCIA, 0 RICHIAMI]  SENSORE BOOLEANO CHE EVITA IL LOOP
+    name: "Evita Ciclo Loop Umidità"
+    icon: mdi:shield-lock
+
+  aspiratore_master_evita_ciclo_loop_rilevamento:                              # [CONFIGURAZIONE 0 RICHIAMI] [AUTOMAZIONE, PIU' RICHIAMI] [INTERFACCIA, 0 RICHIAMI]  SENSORE BOOLEANO CHE EVITA IL LOOP
+    name: "Evita Ciclo Loop Rilevamento"
+    icon: mdi:shield-lock
+
+  aspiratore_master_debug:                                                     # [CONFIGURAZIONE 0 RICHIAMI] [AUTOMAZIONE, PIU' RICHIAMI] [INTERFACCIA, 0 RICHIAMI]  SENSORE BOOLEANO PER MOSTRARE TRAMITE NOTIFICA PERSISTENTE L'OPZIONE ATTIVATA NELL'AUTOMAZIONE TRAMITE TRIGGER
+    name: "Mostra Notifiche Debug"
+    icon: mdi:shield-lock
+################### Fine Creazione Switch Booleani impiegati nell'Interfaccia Lovelace per mostrare o meno le Opzioni ######################################################################################################
+
+################### Inizio Creazione input datetime per l'accensione e lo spegnimento della aspiratore per ogni giorno della settimana #####################################################################################
+input_datetime:
+  aspiratore_master_impostazioni_umidita_start_time:                           # [CONFIGURAZIONE, PIU’ RICHIAMI] [INTERFACCIA, PIU’ RICHIAMI] [AUTOMAZIONE,0 RICHIAMI]
+    name: Ora Inizio Impostazioni
+    has_date: false
+    has_time: true
+    icon: mdi:timer-play-outline
+
+  aspiratore_master_impostazioni_umidita_end_time:                             # [CONFIGURAZIONE, PIU’ RICHIAMI] [INTERFACCIA, PIU’ RICHIAMI] [AUTOMAZIONE,0 RICHIAMI]
+    name: Ora Fine Impostazioni
+    has_date: false
+    has_time: true
+    icon: mdi:timer-stop-outline
+
+  aspiratore_master_impostazioni_rilevamento_start_time:                       # [CONFIGURAZIONE, PIU’ RICHIAMI] [INTERFACCIA, PIU’ RICHIAMI] [AUTOMAZIONE,0 RICHIAMI]
+    name: Ora Inizio Impostazioni
+    has_date: false
+    has_time: true
+    icon: mdi:timer-play-outline
+
+  aspiratore_master_impostazioni_rilevamento_end_time:                         # [CONFIGURAZIONE, PIU’ RICHIAMI] [INTERFACCIA, PIU’ RICHIAMI] [AUTOMAZIONE,0 RICHIAMI]
+    name: Ora Fine Impostazioni
+    has_date: false
+    has_time: true
+    icon: mdi:timer-stop-outline
+################### Fine Creazione input datetime per l'accensione e lo spegnimento della aspiratore per ogni giorno della settimana #######################################################################################
+timer:
+  aspiratore_master_permanenza_umidita:
+    name: "Timer Durata Umidità"
+    icon: mdi:timer-sand
+    restore: false # Mantiene il timer non attivo se riavvii Home Assistant
+    
+  aspiratore_master_ciclo:
+    name: "Timer Controllo Stato Aspiratore"
+    icon: mdi:timer-sand
+    restore: false # Mantiene il timer non attivo se riavvii Home Assistant
+
+  aspiratore_master_durata_aspirazione:
+    name: "Timer Durata Aspirazione"
+    icon: mdi:timer-sand
+    restore: false # Mantiene il timer non attivo se riavvii Home Assistant
+
+  aspiratore_master_ciclo_rilevamento:
+    name: "Timer Controllo Stato Aspiratore"
+    icon: mdi:timer-sand
+    restore: false # Mantiene il timer non attivo se riavvii Home Assistant
+
+  aspiratore_master_permanenza_rilevamento:
+    name: "Timer Durata Aspirazione"
+    icon: mdi:timer-sand
+    restore: false # Mantiene il timer non attivo se riavvii Home Assistant
+################### Inizio Creazione Scripts ###############################################################################################################################################################################
+script:
+################### Inizio Creazione Scripts SELEZIONA ENTITA' installate su Home Assistant ################################################################################################################################
+  aspiratore_master_aggiorna_elenco_entita_aspiratori:
+    alias: ASPIRATORE Master - Aggiorna Elenco Entità Attuatore (Switch/Fan)
+    sequence:
+      - action: input_select.set_options
+        target:
+          entity_id: input_select.aspiratore_master_selected_actuator_entity
+        data:
+          options: >
+            {# Unisco switch e fan in un'unica lista #}
+            {% set entities =
+              (states.switch | map(attribute='entity_id') | list)
+              +
+              (states.fan | map(attribute='entity_id') | list)
+            %}
+            {# Filtro usando la Regex flessibile per escludere i sensori di supporto #}
+            {% set filtered = entities
+              | reject('search', 'aspiratore_.*attuatore_.*selezionato')
+              | reject('search', 'aggiorna')
+              | list
+              | sort %}
+            {{ ["Aggiorna Elenco Entità Attuatore (Switch/Fan)"] + filtered }}
+
+      - delay: "00:00:02"
+
+      - choose:
+          # SE NON VALIDA
+          - conditions:
+              - condition: template
+                value_template: >
+                  {% set selected = states('input_select.aspiratore_master_selected_actuator_entity') %}
+                  {% set options = state_attr('input_select.aspiratore_master_selected_actuator_entity','options') %}
+                  {{ selected not in options or selected in ["Aggiorna Elenco Entità Attuatore (Switch/Fan)","none", "", "unknown", "sconosciuto", "Non disponibile", "unavailable"] }}
+            sequence:
+              - choose:
+                  - conditions:
+                      - condition: template
+                        value_template: >
+                          {% set last = states('input_text.aspiratore_master_last_actuator_entity') %}
+                          {% set options = state_attr('input_select.aspiratore_master_selected_actuator_entity','options') %}
+                          {{ last in options and last not in ["none", "", "unknown", "sconosciuto", "Non disponibile", "unavailable"] }}
+                    sequence:
+                      - action: input_select.select_option
+                        target:
+                          entity_id: input_select.aspiratore_master_selected_actuator_entity
+                        data:
+                          option: "{{ states('input_text.aspiratore_master_last_actuator_entity') }}"
+
+              - choose:
+                  - conditions:
+                      - condition: template
+                        value_template: >
+                          {% set last = states('input_text.aspiratore_master_last_actuator_entity') %}
+                          {% set options = state_attr('input_select.aspiratore_master_selected_actuator_entity','options')
+                            | reject('equalto','Aggiorna Elenco Entità Attuatore (Switch/Fan)') | list %}
+                          {{ last not in options or last in ["none", "", "unknown", "sconosciuto", "Non disponibile", "unavailable"] }}
+                    sequence:
+                      - action: input_select.select_option
+                        target:
+                          entity_id: input_select.aspiratore_master_selected_actuator_entity
+                        data:
+                          option: "Aggiorna Elenco Entità Attuatore (Switch/Fan)"
+
+                      - action: persistent_notification.create
+                        data:
+                          notification_id: aspiratore_errore_attuatore
+                          title: >
+                            {# LOGICA DI LETTURA DIRETTA PER EVITARE UNKNOWN #}
+                            {% set id_reale = states('input_select.aspiratore_master_selected_actuator_entity') %}
+                            {% set nome = state_attr(id_reale, 'friendly_name') %}
+                            {{ "ASPIRATORE: {}".format(nome) if nome not in ["none", "", none] else "ASPIRATORE MASTER" }}
+                          message: >
+                            Controllare Sensore Attuatore:
+                             - Status Attuatore:             {{ states('binary_sensor.aspiratore_master_valore_attuatore_selezionato') }}
+                             - Entità Attuatore selezionato: {{ states('input_select.aspiratore_master_selected_actuator_entity') }}
+
+              # NON sovrascrivere il LAST con valori placeholder/errore
+              - action: input_text.set_value
+                target:
+                  entity_id: input_text.aspiratore_master_last_actuator_entity
+                data:
+                  value: >
+                    {% set sel = states('input_select.aspiratore_master_selected_actuator_entity') %}
+                    {% set invalid = ["Aggiorna Elenco Entità Attuatore (Switch/Fan)","none", "", "unknown", "sconosciuto", "Non disponibile", "unavailable"] %}
+                    {{ sel if sel not in invalid else states('input_text.aspiratore_master_last_actuator_entity') }}
+
+          # SE VALIDA
+          - conditions:
+              - condition: template
+                value_template: >
+                  {% set selected = states('input_select.aspiratore_master_selected_actuator_entity') %}
+                  {% set options = state_attr('input_select.aspiratore_master_selected_actuator_entity','options') %}
+                  {{ selected in options and selected not in ["Aggiorna Elenco Entità Attuatore (Switch/Fan)","none", "", "unknown", "sconosciuto", "Non disponibile", "unavailable"] }}
+            sequence:
+              - action: input_text.set_value
+                target:
+                  entity_id: input_text.aspiratore_master_last_actuator_entity
+                data:
+                  value: "{{ states('input_select.aspiratore_master_selected_actuator_entity') }}"
+    description: Permette di selezionare l'attuatore (switch o fan) preferito tra tutti quelli installati.
+    icon: mdi:fingerprint-off
+    mode: restart
+
+
+  aspiratore_master_aggiorna_elenco_entita_umidita_interna:
+    alias: ASPIRATORE Master - Aggiorna Elenco Entità Umidità Interna
+    sequence:
+      - action: input_select.set_options
+        target:
+          entity_id: input_select.aspiratore_master_selected_humidity_internal_entity
+        data:
+          options: >
+            {% set entities = states.sensor
+              | selectattr('attributes.device_class', 'defined')
+              | selectattr('attributes.device_class', 'eq', 'humidity')
+              | map(attribute='entity_id')
+              | list %}
+            {% set filtered = entities
+              | reject('search', 'aspiratore_.*umidita_.*selezionata')
+              | reject('search', 'aggiorna')
+              | list
+              | sort %}
+            {{ ["Aggiorna Elenco Entità Umidità Interna"] + filtered }}
+
+      - delay: "00:00:02"
+
+      - choose:
+          # SE NON VALIDA
+          - conditions:
+              - condition: template
+                value_template: >
+                  {% set selected = states('input_select.aspiratore_master_selected_humidity_internal_entity') %}
+                  {% set options = state_attr('input_select.aspiratore_master_selected_humidity_internal_entity','options') %}
+                  {{ selected not in options or selected in ["Aggiorna Elenco Entità Umidità Interna","none", "", "unknown", "sconosciuto", "Non disponibile", "unavailable"] }}
+            sequence:
+              - choose:
+                  - conditions:
+                      - condition: template
+                        value_template: >
+                          {% set last = states('input_text.aspiratore_master_last_humidity_internal_entity') %}
+                          {% set options = state_attr('input_select.aspiratore_master_selected_humidity_internal_entity','options') %}
+                          {{ last in options and last not in ["none", "", "unknown", "sconosciuto", "Non disponibile", "unavailable"] }}
+                    sequence:
+                      - action: input_select.select_option
+                        target:
+                          entity_id: input_select.aspiratore_master_selected_humidity_internal_entity
+                        data:
+                          option: "{{ states('input_text.aspiratore_master_last_humidity_internal_entity') }}"
+
+              - choose:
+                  - conditions:
+                      - condition: template
+                        value_template: >
+                          {% set last = states('input_text.aspiratore_master_last_humidity_internal_entity') %}
+                          {% set options = state_attr('input_select.aspiratore_master_selected_humidity_internal_entity','options')
+                            | reject('equalto','Aggiorna Elenco Entità Umidità Interna') | list %}
+                          {{ last not in options or last in ["none", "", "unknown", "sconosciuto", "Non disponibile", "unavailable"] }}
+                    sequence:
+                      - action: input_select.select_option
+                        target:
+                          entity_id: input_select.aspiratore_master_selected_humidity_internal_entity
+                        data:
+                          option: "Aggiorna Elenco Entità Umidità Interna"
+
+                      - action: persistent_notification.create
+                        data:
+                          notification_id: aspiratore_errore_umidita
+                          title: >
+                            {# LOGICA DI LETTURA DIRETTA PER EVITARE UNKNOWN #}
+                            {% set id_reale = states('input_select.aspiratore_master_selected_actuator_entity') %}
+                            {% set nome = state_attr(id_reale, 'friendly_name') %}
+                            {{ "ASPIRATORE: {}".format(nome) if nome not in ["none", "", none] else "ASPIRATORE MASTER" }}
+                          message: >
+                            Controllare Sensore Umidità:
+                             - Status Umidità:             {{ states('sensor.aspiratore_master_umidita_interna_selezionata') }}
+                             - Entità Umidità selezionata: {{ states('input_select.aspiratore_master_selected_humidity_internal_entity') }}
+
+              # NON sovrascrivere il LAST con valori placeholder/errore
+              - action: input_text.set_value
+                target:
+                  entity_id: input_text.aspiratore_master_last_humidity_internal_entity
+                data:
+                  value: >
+                    {% set sel = states('input_select.aspiratore_master_selected_humidity_internal_entity') %}
+                    {% set invalid = ["Aggiorna Elenco Entità Umidità Interna","none", "", "unknown", "sconosciuto", "Non disponibile", "unavailable"] %}
+                    {{ sel if sel not in invalid else states('input_text.aspiratore_master_last_humidity_internal_entity') }}
+
+          # SE VALIDA
+          - conditions:
+              - condition: template
+                value_template: >
+                  {% set selected = states('input_select.aspiratore_master_selected_humidity_internal_entity') %}
+                  {% set options = state_attr('input_select.aspiratore_master_selected_humidity_internal_entity','options') %}
+                  {{ selected in options and selected not in ["Aggiorna Elenco Entità Umidità Interna","none", "", "unknown", "sconosciuto", "Non disponibile", "unavailable"] }}
+            sequence:
+              - action: input_text.set_value
+                target:
+                  entity_id: input_text.aspiratore_master_last_humidity_internal_entity
+                data:
+                  value: "{{ states('input_select.aspiratore_master_selected_humidity_internal_entity') }}"
+    description: Permette di selezionare l'entità umidità preferita tra tutte quelle installate in Home Assistant.
+    icon: mdi:fingerprint-off
+    mode: restart
+
+
+  aspiratore_master_aggiorna_elenco_entita_rilevamento:
+    alias: ASPIRATORE Master - Aggiorna Elenco Entità Rilevamento
+    sequence:
+      - action: input_select.set_options
+        target:
+          entity_id: input_select.aspiratore_master_selected_motion_sensor_internal_entity
+        data:
+          options: >
+            {% set entities = states.binary_sensor
+              | selectattr('attributes.device_class', 'defined')
+              | selectattr('attributes.device_class', 'in', ['motion', 'occupancy', 'presence'])
+              | map(attribute='entity_id')
+              | list %}
+            {% set filtered = entities
+              | reject('search', 'aspiratore_.*rilevamento_.*selezionato')
+              | reject('search', 'aggiorna')
+              | list
+              | sort %}
+            {{ ["Aggiorna Elenco Entità Rilevamento"] + filtered }}
+
+      - delay: "00:00:02"
+
+      - choose:
+          # SE NON VALIDA
+          - conditions:
+              - condition: template
+                value_template: >
+                  {% set selected = states('input_select.aspiratore_master_selected_motion_sensor_internal_entity') %}
+                  {% set options = state_attr('input_select.aspiratore_master_selected_motion_sensor_internal_entity','options') %}
+                  {{ selected not in options or selected in ["Aggiorna Elenco Entità Rilevamento","none", "", "unknown", "sconosciuto", "Non disponibile", "unavailable"] }}
+            sequence:
+              - choose:
+                  - conditions:
+                      - condition: template
+                        value_template: >
+                          {% set last = states('input_text.aspiratore_master_last_motion_sensor_internal_entity') %}
+                          {% set options = state_attr('input_select.aspiratore_master_selected_motion_sensor_internal_entity','options') %}
+                          {{ last in options and last not in ["none", "", "unknown", "sconosciuto", "Non disponibile", "unavailable"] }}
+                    sequence:
+                      - action: input_select.select_option
+                        target:
+                          entity_id: input_select.aspiratore_master_selected_motion_sensor_internal_entity
+                        data:
+                          option: "{{ states('input_text.aspiratore_master_last_motion_sensor_internal_entity') }}"
+
+              - choose:
+                  - conditions:
+                      - condition: template
+                        value_template: >
+                          {% set last = states('input_text.aspiratore_master_last_motion_sensor_internal_entity') %}
+                          {% set options = state_attr('input_select.aspiratore_master_selected_motion_sensor_internal_entity','options')
+                            | reject('equalto','Aggiorna Elenco Entità Rilevamento') | list %}
+                          {{ last not in options or last in ["none", "", "unknown", "sconosciuto", "Non disponibile", "unavailable"] }}
+                    sequence:
+                      - action: input_select.select_option
+                        target:
+                          entity_id: input_select.aspiratore_master_selected_motion_sensor_internal_entity
+                        data:
+                          option: "Aggiorna Elenco Entità Rilevamento"
+
+                      - action: persistent_notification.create
+                        data:
+                          notification_id: aspiratore_errore_rilevatore
+                          title: >
+                            {# LOGICA DI LETTURA DIRETTA PER EVITARE UNKNOWN #}
+                            {% set id_reale = states('input_select.aspiratore_master_selected_actuator_entity') %}
+                            {% set nome = state_attr(id_reale, 'friendly_name') %}
+                            {{ "ASPIRATORE: {}".format(nome) if nome not in ["none", "", none] else "ASPIRATORE MASTER" }}
+                          message: >
+                            Controllare Sensore Rilevamento:
+                             - Status Rilevatore:             {{ states('binary_sensor.aspiratore_master_stato_rilevamento_selezionato') }}
+                             - Entità rilevatore selezionata: {{ states('input_select.aspiratore_master_selected_motion_sensor_internal_entity') }}
+
+              # NON sovrascrivere il LAST con valori placeholder/errore
+              - action: input_text.set_value
+                target:
+                  entity_id: input_text.aspiratore_master_last_motion_sensor_internal_entity
+                data:
+                  value: >
+                    {% set sel = states('input_select.aspiratore_master_selected_motion_sensor_internal_entity') %}
+                    {% set invalid = ["Aggiorna Elenco Entità Rilevamento","none", "", "unknown", "sconosciuto", "Non disponibile", "unavailable"] %}
+                    {{ sel if sel not in invalid else states('input_text.aspiratore_master_last_motion_sensor_internal_entity') }}
+
+          # SE VALIDA
+          - conditions:
+              - condition: template
+                value_template: >
+                  {% set selected = states('input_select.aspiratore_master_selected_motion_sensor_internal_entity') %}
+                  {% set options = state_attr('input_select.aspiratore_master_selected_motion_sensor_internal_entity','options') %}
+                  {{ selected in options and selected not in ["Aggiorna Elenco Entità Rilevamento","none", "", "unknown", "sconosciuto", "Non disponibile", "unavailable"] }}
+            sequence:
+              - action: input_text.set_value
+                target:
+                  entity_id: input_text.aspiratore_master_last_motion_sensor_internal_entity
+                data:
+                  value: "{{ states('input_select.aspiratore_master_selected_motion_sensor_internal_entity') }}"
+    description: Permette di selezionare il sensore di presenza o movimento tra quelli compatibili.
+    icon: mdi:fingerprint-off
+    mode: restart
+################### Fine Creazione Scripts SELEZIONA ENTITA' installate su Home Assistant ##################################################################################################################################
+  aspiratore_master_upgrade_sensors:
+    alias: ASPIRATORE Master - Agg. Entità (Attendere)
+    sequence:
+      - delay: "00:00:05"  # <--- Fondamentale: aspetta che il sistema sia pronto
+      - action: script.aspiratore_master_aggiorna_elenco_entita_aspiratori
+      - action: script.aspiratore_master_aggiorna_elenco_entita_umidita_interna
+      - action: script.aspiratore_master_aggiorna_elenco_entita_rilevamento
+      - delay: "00:00:02"
+      - action: homeassistant.update_entity
+        target:
+          entity_id:
+            - input_text.aspiratore_master_last_actuator_entity
+            - input_text.aspiratore_master_last_humidity_internal_entity
+            - input_text.aspiratore_master_last_motion_sensor_internal_entity
+            - input_select.aspiratore_master_selected_actuator_entity
+            - input_select.aspiratore_master_selected_motion_sensor_internal_entity
+            - input_select.aspiratore_master_selected_humidity_internal_entity
+            - sensor.aspiratore_master_versione_repository
+    mode: restart
+    icon: mdi:cursor-pointer
+    description: Aggiorna in sequenza tutte le entità e i sensori della aspiratore.
+
+  aspiratore_master_profilo_umidita:
+    alias: ASPIRATORE Master - Profilo Umidità Interna di Avvio
+    sequence:
+      - action: input_boolean.turn_on
+        target:
+          entity_id:
+            - input_boolean.aspiratore_master_accendi_spegni_aspiratore_impostazioni_umidita
+            - input_boolean.aspiratore_master_impostazione_controllo_stato_umidita
+            - input_boolean.aspiratore_master_impostazione_tempo_massimo_aspiratore_umidita
+      - action: input_datetime.set_datetime
+        data:
+          time: "08:00:00"
+        target:
+          entity_id: input_datetime.aspiratore_master_impostazioni_umidita_start_time
+      - action: input_datetime.set_datetime
+        data:
+          time: "20:00:00"
+        target:
+          entity_id: input_datetime.aspiratore_master_impostazioni_umidita_end_time
+      - action: input_number.set_value
+        data:
+          value: 75
+        target:
+          entity_id: input_number.aspiratore_master_umidita_avvio
+      - action: input_number.set_value
+        data:
+          value: 60
+        target:
+          entity_id: input_number.aspiratore_master_durata_umidita_per_attivazione
+      - action: input_number.set_value
+        data:
+          value: 5
+        target:
+          entity_id: input_number.aspiratore_master_intervallo_riprova_umidita
+      - action: input_number.set_value
+        data:
+          value: 300
+        target:
+          entity_id: input_number.aspiratore_master_durata_aspirazione_per_umidita
+      - action: input_number.set_value
+        data:
+          value: 0
+        target:
+          entity_id: input_number.aspiratore_master_offset_umidita
+    mode: restart
+    icon: mdi:cursor-pointer
+  
+  aspiratore_master_profilo_rilevamento:
+    alias: ASPIRATORE Master - Profilo rilevamento di Avvio
+    sequence:
+      - action: input_boolean.turn_on
+        target:
+          entity_id:
+            - input_boolean.aspiratore_master_accendi_spegni_aspiratore_impostazioni_rilevamento
+            - input_boolean.aspiratore_master_impostazione_controllo_stato_rilevamento
+            - input_boolean.aspiratore_master_impostazione_tempo_massimo_aspiratore_rilevatore
+      - action: input_datetime.set_datetime
+        data:
+          time: "08:00:00"
+        target:
+          entity_id: input_datetime.aspiratore_master_impostazioni_rilevamento_start_time
+      - action: input_datetime.set_datetime
+        data:
+          time: "20:00:00"
+        target:
+          entity_id: input_datetime.aspiratore_master_impostazioni_rilevamento_end_time
+      - action: input_number.set_value
+        data:
+          value: 5
+        target:
+          entity_id: input_number.aspiratore_master_intervallo_riprova_rilevamento
+      - action: input_number.set_value
+        data:
+          value: 30
+        target:
+          entity_id: input_number.aspiratore_master_durata_rilevamenti_per_attivazione
+    mode: restart
+    icon: mdi:cursor-pointer
+
+  aspiratore_master_profilo_inizializzazione:
+    alias: ASPIRATORE Master - Profilo Inizializzazione
+    sequence:
+      - action: script.aspiratore_master_profilo_umidita
+      - action: script.aspiratore_master_profilo_rilevamento
+      - action: input_boolean.turn_off
+        data: {}
+        target:
+          entity_id:
+            - input_boolean.aspiratore_master_accendi_spegni_aspiratore
+            - input_boolean.aspiratore_master_finestra_impostazioni_generali            
+            - input_boolean.aspiratore_master_finestra_impostazioni_umidita
+            - input_boolean.aspiratore_master_finestra_impostazioni_rilevamento
+            - input_boolean.aspiratore_master_finestra_impostazioni_informazioni
+    mode: restart
+    icon: mdi:cursor-pointer
+
+  aspiratore_master_panic_botton:
+    alias: Panic Botton
+    description: >
+      Arresto generale di sicurezza del sistema Aspiratore Master.
+      Lo script annulla tutti i timer di umidità e rilevamento, spegne le spie,
+      disattiva i boolean di blocco ciclo loop e porta l’aspiratore in stato OFF.
+    sequence:
+      - alias: Annulla timer umidità
+        action: timer.cancel
+        target:
+          entity_id:
+            - timer.aspiratore_master_permanenza_umidita
+            - timer.aspiratore_master_ciclo
+            - timer.aspiratore_master_durata_aspirazione
+      - alias: Annulla timer rilevamento
+        action: timer.cancel
+        target:
+          entity_id:
+            - timer.aspiratore_master_ciclo_rilevamento
+            - timer.aspiratore_master_permanenza_rilevamento
+      - alias: Spegni spie umidità e rilevamento
+        action: input_boolean.turn_off
+        target:
+          entity_id:
+            - input_boolean.aspiratore_master_spia_umidita
+            - input_boolean.aspiratore_master_spia_rilevamento
+      - alias: Disattiva blocco ciclo loop umidità e Disattiva blocco ciclo loop rilevamento
+        action: input_boolean.turn_off
+        target:
+          entity_id:
+            - input_boolean.aspiratore_master_evita_ciclo_loop_umidita
+            - input_boolean.aspiratore_master_evita_ciclo_loop_rilevamento
+      - alias: Spegni aspiratore
+        action: input_boolean.turn_off
+        target:
+          entity_id:
+            - input_boolean.aspiratore_master_accendi_spegni_aspiratore_impostazioni_rilevamento
+            - input_boolean.aspiratore_master_accendi_spegni_aspiratore_impostazioni_umidita
+            - input_boolean.aspiratore_master_accendi_spegni_aspiratore
+    mode: restart
+    icon: mdi:cursor-pointer
+################### Fine Creazione Scripts #################################################################################################################################################################################
+
+################### Inzio Creazione Automazione ############################################################################################################################################################################
+
+################### Fine Creazione Automazione #############################################################################################################################################################################
+
+#################################################################################################################################
+# Esclusione entità da Recorder, History e Logbook per ridurre il carico sul database escludendo entità aggiornate di frequente #
+#                                                                                                                               #
+#      METTERE DAVANTI AL SENSORE IL SIMBOLO #                                                                                  #
+#                                                                                                                               #
+#      ES. #      - sensor.aspiratore_master_umidita_interna_selezionata                                                        #
+#                                                                                                                               #
+#      SIGNIFICA CHE VERRA' REGISTRATO NEL DB DI HOME ASSISTANT                                                                 #
+#                                                                                                                               #
+#################################################################################################################################
+recorder:
+  exclude:
+    entities:
+      - sensor.aspiratore_master_versione_repository
+      - sensor.aspiratore_master_versione_corrente
+    # - sensor.aspiratore_master_umidita_interna_selezionata
+    # - binary_sensor.aspiratore_master_errore_configurazione
+    # - binary_sensor.aspiratore_master_valore_attuatore_selezionato
+    # - binary_sensor.aspiratore_master_stato_rilevamento_selezionato
+      - sensor.aspiratore_master_nome_attuatore_selezionato
+      - sensor.aspiratore_master_nome_umidita_interna_selezionata
+      - sensor.aspiratore_master_nome_rilevamento_selezionato
+      - input_text.aspiratore_master_last_actuator_entity
+      - input_text.aspiratore_master_last_humidity_internal_entity
+      - input_text.aspiratore_master_last_motion_sensor_internal_entity
+      - input_select.aspiratore_master_selected_actuator_entity
+      - input_select.aspiratore_master_selected_humidity_internal_entity
+      - input_select.aspiratore_master_selected_motion_sensor_internal_entity
+      - input_number.aspiratore_master_umidita_avvio
+      - input_number.aspiratore_master_offset_umidita
+      - input_number.aspiratore_master_intervallo_riprova_umidita
+      - input_number.aspiratore_master_durata_umidita_per_attivazione
+      - input_number.aspiratore_master_durata_rilevamenti_per_attivazione
+      - input_number.aspiratore_master_intervallo_riprova_rilevamento
+      - input_number.aspiratore_master_durata_aspirazione_per_umidita
+      - input_boolean.aspiratore_master_mostra_nascondi_aspiratore_applicazione
+      - input_boolean.aspiratore_master_finestra_impostazioni_generali
+      - input_boolean.aspiratore_master_finestra_impostazioni_umidita
+      - input_boolean.aspiratore_master_finestra_impostazioni_rilevamento
+      - input_boolean.aspiratore_master_finestra_impostazioni_informazioni
+      - input_boolean.aspiratore_master_spia_umidita
+      - input_boolean.aspiratore_master_spia_rilevamento
+      - input_boolean.aspiratore_master_impostazione_controllo_stato_umidita
+    # - input_boolean.aspiratore_master_accendi_spegni_aspiratore
+      - input_boolean.aspiratore_master_accendi_spegni_aspiratore_impostazioni_umidita
+      - input_boolean.aspiratore_master_accendi_spegni_aspiratore_impostazioni_rilevamento
+      - input_boolean.aspiratore_master_impostazione_controllo_stato_rilevamento
+      - input_boolean.aspiratore_master_impostazione_tempo_massimo_aspiratore_umidita
+      - input_boolean.aspiratore_master_impostazione_tempo_massimo_aspiratore_rilevatore
+      - input_boolean.aspiratore_master_evita_ciclo_loop_umidita
+      - input_boolean.aspiratore_master_evita_ciclo_loop_rilevamento
+      - input_datetime.aspiratore_master_impostazioni_umidita_start_time
+      - input_datetime.aspiratore_master_impostazioni_umidita_end_time
+      - input_datetime.aspiratore_master_impostazioni_rilevamento_start_time
+      - input_datetime.aspiratore_master_impostazioni_rilevamento_end_time
+      - timer.aspiratore_master_permanenza_umidita
+      - timer.aspiratore_master_ciclo
+      - timer.aspiratore_master_durata_aspirazione
+      - timer.aspiratore_master_ciclo_rilevamento
+      - timer.aspiratore_master_permanenza_rilevamento
+      - script.aspiratore_master_aggiorna_elenco_entita_aspiratori
+      - script.aspiratore_master_aggiorna_elenco_entita_umidita_interna
+      - script.aspiratore_master_aggiorna_elenco_entita_rilevamento
+      - script.aspiratore_master_upgrade_sensors
+      - script.aspiratore_master_profilo_umidita
+      - script.aspiratore_master_profilo_rilevamento
+      - script.aspiratore_master_profilo_inizializzazione
+      - script.aspiratore_master_panic_botton
+      - automation.aspiratore_master_gestione_totale_sistema
+      - automation.aspiratore_master_verifica_spia_umidita
+      - automation.aspiratore_master_verifica_spia_rilevamento
